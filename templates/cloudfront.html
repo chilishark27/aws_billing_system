@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}AWS成本监控 - CloudFront{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title"><i class="fas fa-globe"></i> CloudFront 监控</h1>
+    <p class="page-subtitle">监控CloudFront分发的成本</p>
+</div>
+
+<button class="refresh-btn" onclick="refreshData()">
+    <i class="fas fa-sync-alt"></i> 刷新CloudFront数据
+</button>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>正在扫描CloudFront分发...</span>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-globe"></i></div>
+        <div class="stat-value" id="cf-count">0</div>
+        <div class="stat-label">分发数量</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="stat-value" id="cf-daily-cost">$0.00</div>
+        <div class="stat-label">每日成本</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+        <div class="stat-value" id="cf-monthly-cost">$0.00</div>
+        <div class="stat-label">月度预估</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-network-wired"></i></div>
+        <div class="stat-value" id="cf-avg-cost">$0.00</div>
+        <div class="stat-label">平均单价</div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3><i class="fas fa-list"></i> CloudFront 分发详情</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="fas fa-fingerprint"></i> 分发ID</th>
+                    <th><i class="fas fa-cog"></i> 类型</th>
+                    <th><i class="fas fa-map-marker-alt"></i> 区域</th>
+                    <th><i class="fas fa-clock"></i> 每小时成本</th>
+                    <th><i class="fas fa-calendar-day"></i> 每日成本</th>
+                    <th><i class="fas fa-calendar-alt"></i> 月度预估</th>
+                </tr>
+            </thead>
+            <tbody id="cf-tbody">
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <div>正在扫描CloudFront分发...</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="content-card">
+    <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; border-left: 4px solid #2196f3;">
+        <h4><i class="fas fa-info-circle"></i> CloudFront计费说明</h4>
+        <p style="margin-top: 10px; color: #2c3e50;">
+            • 数据传输费用: $0.085/GB（出站流量）<br>
+            • 请求费用: $0.0075/10,000个HTTP请求<br>
+            • 当前显示的是基于流量的估算值<br>
+            • 实际费用取决于地理位置和流量模式
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function loadCloudFrontData() {
+        try {
+            const response = await fetch('/api/service_data/cloudfront');
+            const data = await response.json();
+            
+            const totalDailyCost = data.reduce((sum, item) => sum + item.daily_cost, 0);
+            const avgCost = data.length > 0 ? totalDailyCost / data.length : 0;
+            
+            document.getElementById('cf-count').textContent = data.length;
+            document.getElementById('cf-daily-cost').textContent = `$${totalDailyCost.toFixed(2)}`;
+            document.getElementById('cf-monthly-cost').textContent = `$${(totalDailyCost * 30).toFixed(2)}`;
+            document.getElementById('cf-avg-cost').textContent = `$${avgCost.toFixed(2)}`;
+
+            updateCloudFrontTable(data);
+        } catch (error) {
+            console.error('CloudFront数据加载失败:', error);
+        }
+    }
+
+    function updateCloudFrontTable(resources) {
+        const tbody = document.getElementById('cf-tbody');
+        tbody.innerHTML = '';
+        
+        if (resources.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-globe"></i>
+                        <div>未发现启用的CloudFront分发</div>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        resources.forEach(resource => {
+            const row = tbody.insertRow();
+            const costClass = getCostClass(resource.daily_cost);
+            const details = JSON.parse(resource.details);
+            
+            row.innerHTML = `
+                <td><span class="resource-id">${resource.resource_id}</span></td>
+                <td>${details.instance_type}</td>
+                <td><i class="fas fa-globe"></i> ${resource.region}</td>
+                <td class="${costClass}">$${resource.hourly_cost.toFixed(4)}</td>
+                <td class="${costClass}">$${resource.daily_cost.toFixed(2)}</td>
+                <td class="${costClass}">$${(resource.daily_cost * 30).toFixed(2)}</td>
+            `;
+        });
+    }
+
+    async function refreshData() {
+        showLoading(true);
+        try {
+            await loadCloudFrontData();
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshData();
+        setInterval(refreshData, 180000);
+    });
+</script>
+{% endblock %}

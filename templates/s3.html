@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}AWS成本监控 - S3{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title"><i class="fas fa-hdd"></i> S3 存储监控</h1>
+    <p class="page-subtitle">监控所有S3存储桶的存储成本</p>
+</div>
+
+<button class="refresh-btn" onclick="refreshData()">
+    <i class="fas fa-sync-alt"></i> 刷新S3数据
+</button>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>正在扫描S3存储桶...</span>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-hdd"></i></div>
+        <div class="stat-value" id="s3-count">0</div>
+        <div class="stat-label">存储桶数量</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="stat-value" id="s3-daily-cost">$0.00</div>
+        <div class="stat-label">每日成本</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+        <div class="stat-value" id="s3-monthly-cost">$0.00</div>
+        <div class="stat-label">月度预估</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-archive"></i></div>
+        <div class="stat-value" id="s3-total-size">0 GB</div>
+        <div class="stat-label">总存储量</div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3><i class="fas fa-list"></i> S3 存储桶详情</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="fas fa-fingerprint"></i> 存储桶名称</th>
+                    <th><i class="fas fa-archive"></i> 存储大小</th>
+                    <th><i class="fas fa-clock"></i> 每小时成本</th>
+                    <th><i class="fas fa-calendar-day"></i> 每日成本</th>
+                    <th><i class="fas fa-calendar-alt"></i> 月度预估</th>
+                </tr>
+            </thead>
+            <tbody id="s3-tbody">
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <div>正在扫描S3存储桶...</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="content-card">
+    <div style="background: #e8f4fd; padding: 20px; border-radius: 10px; border-left: 4px solid #3498db;">
+        <h4><i class="fas fa-info-circle"></i> S3计费说明</h4>
+        <p style="margin-top: 10px; color: #2c3e50;">
+            • S3按实际存储量计费，标准存储 $0.023/GB/月<br>
+            • 只显示存储量大于1MB的存储桶<br>
+            • 空存储桶不产生存储费用（但可能有其他费用如请求费用）
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function loadS3Data() {
+        try {
+            const response = await fetch('/api/service_data/s3');
+            const data = await response.json();
+            
+            const totalDailyCost = data.reduce((sum, item) => sum + item.daily_cost, 0);
+            
+            // 计算总存储量
+            let totalSize = 0;
+            data.forEach(item => {
+                const details = JSON.parse(item.details);
+                const sizeMatch = details.instance_type.match(/([\d.]+)GB/);
+                if (sizeMatch) {
+                    totalSize += parseFloat(sizeMatch[1]);
+                }
+            });
+            
+            document.getElementById('s3-count').textContent = data.length;
+            document.getElementById('s3-daily-cost').textContent = `$${totalDailyCost.toFixed(4)}`;
+            document.getElementById('s3-monthly-cost').textContent = `$${(totalDailyCost * 30).toFixed(2)}`;
+            document.getElementById('s3-total-size').textContent = `${totalSize.toFixed(2)} GB`;
+
+            updateS3Table(data);
+        } catch (error) {
+            console.error('S3数据加载失败:', error);
+        }
+    }
+
+    function updateS3Table(resources) {
+        const tbody = document.getElementById('s3-tbody');
+        tbody.innerHTML = '';
+        
+        if (resources.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <div>未发现有存储内容的S3存储桶</div>
+                        <small style="color: #7f8c8d; margin-top: 10px; display: block;">
+                            只显示存储量大于1MB的存储桶
+                        </small>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        resources.forEach(resource => {
+            const row = tbody.insertRow();
+            const costClass = getCostClass(resource.daily_cost);
+            const details = JSON.parse(resource.details);
+            
+            row.innerHTML = `
+                <td><span class="resource-id">${resource.resource_id}</span></td>
+                <td><strong>${details.instance_type}</strong></td>
+                <td class="${costClass}">$${resource.hourly_cost.toFixed(6)}</td>
+                <td class="${costClass}">$${resource.daily_cost.toFixed(4)}</td>
+                <td class="${costClass}">$${(resource.daily_cost * 30).toFixed(2)}</td>
+            `;
+        });
+    }
+
+    async function refreshData() {
+        showLoading(true);
+        try {
+            await loadS3Data();
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshData();
+        setInterval(refreshData, 180000);
+    });
+</script>
+{% endblock %}

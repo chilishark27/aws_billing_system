@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}AWS成本监控 - CloudWatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title"><i class="fas fa-chart-bar"></i> CloudWatch 监控</h1>
+    <p class="page-subtitle">监控CloudWatch指标和日志的成本</p>
+</div>
+
+<button class="refresh-btn" onclick="refreshData()">
+    <i class="fas fa-sync-alt"></i> 刷新CloudWatch数据
+</button>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>正在扫描CloudWatch资源...</span>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+        <div class="stat-value" id="cw-resources">0</div>
+        <div class="stat-label">监控资源</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="stat-value" id="cw-daily-cost">$0.00</div>
+        <div class="stat-label">每日成本</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+        <div class="stat-value" id="cw-logs">0</div>
+        <div class="stat-label">日志组</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-tachometer-alt"></i></div>
+        <div class="stat-value" id="cw-metrics">0</div>
+        <div class="stat-label">自定义指标</div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3><i class="fas fa-list"></i> CloudWatch 资源详情</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="fas fa-fingerprint"></i> 资源ID</th>
+                    <th><i class="fas fa-cog"></i> 类型</th>
+                    <th><i class="fas fa-map-marker-alt"></i> 区域</th>
+                    <th><i class="fas fa-clock"></i> 每小时成本</th>
+                    <th><i class="fas fa-calendar-day"></i> 每日成本</th>
+                    <th><i class="fas fa-calendar-alt"></i> 月度预估</th>
+                </tr>
+            </thead>
+            <tbody id="cw-tbody">
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <div>正在扫描CloudWatch资源...</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="content-card">
+    <div style="background: #e8f5e8; padding: 20px; border-radius: 10px; border-left: 4px solid #4caf50;">
+        <h4><i class="fas fa-info-circle"></i> CloudWatch计费说明</h4>
+        <p style="margin-top: 10px; color: #2c3e50;">
+            • 自定义指标: $0.30/指标/月<br>
+            • 日志存储: $0.50/GB/月<br>
+            • 日志摄取: $0.50/GB<br>
+            • API请求: $0.01/1000请求
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function loadCloudWatchData() {
+        try {
+            const response = await fetch('/api/service_data/cloudwatch');
+            const data = await response.json();
+            
+            const totalDailyCost = data.reduce((sum, item) => sum + item.daily_cost, 0);
+            
+            let logGroups = 0;
+            let customMetrics = 0;
+            data.forEach(item => {
+                const details = JSON.parse(item.details);
+                if (details.instance_type.includes('Logs')) {
+                    logGroups++;
+                } else if (details.instance_type.includes('Custom Metrics')) {
+                    const match = details.instance_type.match(/(\d+) Custom Metrics/);
+                    if (match) customMetrics += parseInt(match[1]);
+                }
+            });
+            
+            document.getElementById('cw-resources').textContent = data.length;
+            document.getElementById('cw-daily-cost').textContent = `$${totalDailyCost.toFixed(2)}`;
+            document.getElementById('cw-logs').textContent = logGroups;
+            document.getElementById('cw-metrics').textContent = customMetrics;
+
+            updateCloudWatchTable(data);
+        } catch (error) {
+            console.error('CloudWatch数据加载失败:', error);
+        }
+    }
+
+    function updateCloudWatchTable(resources) {
+        const tbody = document.getElementById('cw-tbody');
+        tbody.innerHTML = '';
+        
+        if (resources.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-chart-bar"></i>
+                        <div>未发现CloudWatch计费资源</div>
+                        <small style="color: #7f8c8d; margin-top: 10px; display: block;">
+                            只显示自定义指标和有存储的日志组
+                        </small>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        resources.forEach(resource => {
+            const row = tbody.insertRow();
+            const costClass = getCostClass(resource.daily_cost);
+            const details = JSON.parse(resource.details);
+            
+            row.innerHTML = `
+                <td><span class="resource-id">${resource.resource_id}</span></td>
+                <td>${details.instance_type}</td>
+                <td><i class="fas fa-map-marker-alt"></i> ${resource.region}</td>
+                <td class="${costClass}">$${resource.hourly_cost.toFixed(4)}</td>
+                <td class="${costClass}">$${resource.daily_cost.toFixed(2)}</td>
+                <td class="${costClass}">$${(resource.daily_cost * 30).toFixed(2)}</td>
+            `;
+        });
+    }
+
+    async function refreshData() {
+        showLoading(true);
+        try {
+            await loadCloudWatchData();
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshData();
+        setInterval(refreshData, 180000);
+    });
+</script>
+{% endblock %}

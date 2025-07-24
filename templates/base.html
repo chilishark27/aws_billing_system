@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AWS成本监控中心{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --bg-color: #ecf0f1;
+            --sidebar-bg: #34495e;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --border-color: #bdc3c7;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-color);
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            padding: 20px 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand h2 {
+            color: white;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+
+        .sidebar-brand p {
+            color: #bdc3c7;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+        
+        .nav-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .nav-menu::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .nav-menu::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+        
+        .nav-menu::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(52, 152, 219, 0.1);
+            color: white;
+            border-left-color: var(--secondary-color);
+        }
+
+        .nav-link i {
+            width: 20px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 30px;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .page-title {
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+            border-radius: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid rgba(189, 195, 199, 0.3);
+        }
+
+        th {
+            background: rgba(52, 152, 219, 0.1);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+
+        tr:hover {
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        .resource-id {
+            font-family: 'Monaco', 'Menlo', monospace;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .service-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .service-ec2 { background: #fff3cd; color: #856404; }
+        .service-rds { background: #d1ecf1; color: #0c5460; }
+        .service-lambda { background: #d4edda; color: #155724; }
+        .service-s3 { background: #f8d7da; color: #721c24; }
+        .service-ebs { background: #e2e3e5; color: #383d41; }
+        .service-vpc { background: #cce5ff; color: #004085; }
+        .service-fsx { background: #fff0e6; color: #cc6600; }
+        .service-cloudwatch { background: #e8f5e8; color: #2d5a2d; }
+        .service-waf { background: #ffe6e6; color: #8b0000; }
+        .service-amazon { background: #fff3e0; color: #e65100; }
+        .service-cloudfront { background: #e3f2fd; color: #0d47a1; }
+
+        .cost-high { color: var(--accent-color); font-weight: 700; }
+        .cost-medium { color: var(--warning-color); font-weight: 600; }
+        .cost-low { color: var(--success-color); font-weight: 500; }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .loading {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            color: var(--secondary-color);
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--secondary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state i {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            
+            .page-title { font-size: 2em; }
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-brand">
+            <h2><i class="fas fa-chart-line"></i> AWS成本监控</h2>
+            <p>实时成本追踪系统</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="/" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-home"></i> 总览
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/ec2" class="nav-link {% if request.endpoint == 'ec2_page' %}active{% endif %}">
+                    <i class="fas fa-server"></i> EC2
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/rds" class="nav-link {% if request.endpoint == 'rds_page' %}active{% endif %}">
+                    <i class="fas fa-database"></i> RDS
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/lambda" class="nav-link {% if request.endpoint == 'lambda_page' %}active{% endif %}">
+                    <i class="fas fa-code"></i> Lambda
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/s3" class="nav-link {% if request.endpoint == 's3_page' %}active{% endif %}">
+                    <i class="fas fa-hdd"></i> S3
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/ebs" class="nav-link {% if request.endpoint == 'ebs_page' %}active{% endif %}">
+                    <i class="fas fa-compact-disc"></i> EBS
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/vpc" class="nav-link {% if request.endpoint == 'vpc_page' %}active{% endif %}">
+                    <i class="fas fa-network-wired"></i> VPC
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/fsx" class="nav-link {% if request.endpoint == 'fsx_page' %}active{% endif %}">
+                    <i class="fas fa-folder-open"></i> FSx
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/cloudwatch" class="nav-link {% if request.endpoint == 'cloudwatch_page' %}active{% endif %}">
+                    <i class="fas fa-chart-bar"></i> CloudWatch
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/waf" class="nav-link {% if request.endpoint == 'waf_page' %}active{% endif %}">
+                    <i class="fas fa-shield-alt"></i> WAF
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/amazonq" class="nav-link {% if request.endpoint == 'amazonq_page' %}active{% endif %}">
+                    <i class="fas fa-robot"></i> Amazon Q
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/cloudfront" class="nav-link {% if request.endpoint == 'cloudfront_page' %}active{% endif %}">
+                    <i class="fas fa-globe"></i> CloudFront
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script>
+        function getCostClass(cost) {
+            if (cost > 5) return 'cost-high';
+            if (cost > 1) return 'cost-medium';
+            return 'cost-low';
+        }
+
+        function getServiceBadge(service) {
+            return `<span class="service-badge service-${service.toLowerCase()}">${service}</span>`;
+        }
+
+        function showLoading(show = true) {
+            const loading = document.getElementById('loading');
+            const refreshBtn = document.querySelector('.refresh-btn');
+            
+            if (loading && refreshBtn) {
+                if (show) {
+                    loading.style.display = 'flex';
+                    refreshBtn.disabled = true;
+                    refreshBtn.style.opacity = '0.6';
+                } else {
+                    loading.style.display = 'none';
+                    refreshBtn.disabled = false;
+                    refreshBtn.style.opacity = '1';
+                }
+            }
+        }
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

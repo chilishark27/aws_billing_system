@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}AWS成本监控 - VPC{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title"><i class="fas fa-network-wired"></i> VPC 网络资源监控</h1>
+    <p class="page-subtitle">监控NAT Gateway和未使用的Elastic IP成本</p>
+</div>
+
+<button class="refresh-btn" onclick="refreshData()">
+    <i class="fas fa-sync-alt"></i> 刷新VPC数据
+</button>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>正在扫描VPC资源...</span>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-network-wired"></i></div>
+        <div class="stat-value" id="vpc-count">0</div>
+        <div class="stat-label">VPC资源数量</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="stat-value" id="vpc-daily-cost">$0.00</div>
+        <div class="stat-label">每日成本</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-route"></i></div>
+        <div class="stat-value" id="nat-count">0</div>
+        <div class="stat-label">NAT Gateway</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-globe"></i></div>
+        <div class="stat-value" id="eip-count">0</div>
+        <div class="stat-label">未使用EIP</div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3><i class="fas fa-list"></i> VPC 资源详情</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="fas fa-fingerprint"></i> 资源ID</th>
+                    <th><i class="fas fa-cog"></i> 资源类型</th>
+                    <th><i class="fas fa-map-marker-alt"></i> 区域</th>
+                    <th><i class="fas fa-clock"></i> 每小时成本</th>
+                    <th><i class="fas fa-calendar-day"></i> 每日成本</th>
+                    <th><i class="fas fa-calendar-alt"></i> 月度预估</th>
+                </tr>
+            </thead>
+            <tbody id="vpc-tbody">
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <div>正在扫描VPC资源...</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="content-card">
+    <div style="background: #e8f4fd; padding: 20px; border-radius: 10px; border-left: 4px solid #3498db;">
+        <h4><i class="fas fa-info-circle"></i> VPC计费说明</h4>
+        <p style="margin-top: 10px; color: #2c3e50;">
+            • NAT Gateway: $0.045/小时 + 数据处理费用<br>
+            • 未使用的Elastic IP: $0.005/小时<br>
+            • 已关联到运行实例的EIP不收费
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function loadVPCData() {
+        try {
+            const response = await fetch('/api/service_data/vpc');
+            const data = await response.json();
+            
+            const totalDailyCost = data.reduce((sum, item) => sum + item.daily_cost, 0);
+            
+            let natCount = 0;
+            let eipCount = 0;
+            data.forEach(item => {
+                const details = JSON.parse(item.details);
+                if (details.instance_type === 'NAT Gateway') {
+                    natCount++;
+                } else if (details.instance_type === 'Unused EIP') {
+                    eipCount++;
+                }
+            });
+            
+            document.getElementById('vpc-count').textContent = data.length;
+            document.getElementById('vpc-daily-cost').textContent = `$${totalDailyCost.toFixed(2)}`;
+            document.getElementById('nat-count').textContent = natCount;
+            document.getElementById('eip-count').textContent = eipCount;
+
+            updateVPCTable(data);
+        } catch (error) {
+            console.error('VPC数据加载失败:', error);
+        }
+    }
+
+    function updateVPCTable(resources) {
+        const tbody = document.getElementById('vpc-tbody');
+        tbody.innerHTML = '';
+        
+        if (resources.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <div>未发现产生费用的VPC资源</div>
+                        <small style="color: #7f8c8d; margin-top: 10px; display: block;">
+                            只显示NAT Gateway和未使用的Elastic IP
+                        </small>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        resources.forEach(resource => {
+            const row = tbody.insertRow();
+            const costClass = getCostClass(resource.daily_cost);
+            const details = JSON.parse(resource.details);
+            
+            row.innerHTML = `
+                <td><span class="resource-id">${resource.resource_id}</span></td>
+                <td>${details.instance_type}</td>
+                <td><i class="fas fa-map-marker-alt"></i> ${resource.region}</td>
+                <td class="${costClass}">$${resource.hourly_cost.toFixed(4)}</td>
+                <td class="${costClass}">$${resource.daily_cost.toFixed(2)}</td>
+                <td class="${costClass}">$${(resource.daily_cost * 30).toFixed(2)}</td>
+            `;
+        });
+    }
+
+    async function refreshData() {
+        showLoading(true);
+        try {
+            await loadVPCData();
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshData();
+        setInterval(refreshData, 180000);
+    });
+</script>
+{% endblock %}

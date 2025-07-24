@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}AWS成本监控 - Lambda{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title"><i class="fas fa-code"></i> Lambda 函数监控</h1>
+    <p class="page-subtitle">只显示有实际调用的Lambda函数成本</p>
+</div>
+
+<button class="refresh-btn" onclick="refreshData()">
+    <i class="fas fa-sync-alt"></i> 刷新Lambda数据
+</button>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>正在扫描Lambda函数...</span>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-code"></i></div>
+        <div class="stat-value" id="lambda-count">0</div>
+        <div class="stat-label">活跃函数</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="stat-value" id="lambda-daily-cost">$0.00</div>
+        <div class="stat-label">每日成本</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-play"></i></div>
+        <div class="stat-value" id="lambda-invocations">0</div>
+        <div class="stat-label">24小时调用</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-globe"></i></div>
+        <div class="stat-value" id="lambda-regions">0</div>
+        <div class="stat-label">覆盖区域</div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3><i class="fas fa-list"></i> 活跃Lambda函数</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="fas fa-fingerprint"></i> 函数名称</th>
+                    <th><i class="fas fa-memory"></i> 内存配置</th>
+                    <th><i class="fas fa-map-marker-alt"></i> 区域</th>
+                    <th><i class="fas fa-play"></i> 24h调用次数</th>
+                    <th><i class="fas fa-clock"></i> 每小时成本</th>
+                    <th><i class="fas fa-calendar-day"></i> 每日成本</th>
+                </tr>
+            </thead>
+            <tbody id="lambda-tbody">
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <div>正在扫描Lambda函数...</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="content-card">
+    <div style="background: #e8f4fd; padding: 20px; border-radius: 10px; border-left: 4px solid #3498db;">
+        <h4><i class="fas fa-info-circle"></i> Lambda计费说明</h4>
+        <p style="margin-top: 10px; color: #2c3e50;">
+            • Lambda按实际使用量计费，未调用的函数不产生费用<br>
+            • 计费项目：请求次数 + 执行时间 × 分配内存<br>
+            • 只有过去24小时内有调用的函数才会显示在列表中
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function loadLambdaData() {
+        try {
+            const response = await fetch('/api/service_data/lambda');
+            const data = await response.json();
+            
+            const totalDailyCost = data.reduce((sum, item) => sum + item.daily_cost, 0);
+            const regions = [...new Set(data.map(item => item.region))];
+            
+            // 计算总调用次数
+            let totalInvocations = 0;
+            data.forEach(item => {
+                const details = JSON.parse(item.details);
+                const match = details.instance_type.match(/\((\d+)次\/24h\)/);
+                if (match) {
+                    totalInvocations += parseInt(match[1]);
+                }
+            });
+            
+            document.getElementById('lambda-count').textContent = data.length;
+            document.getElementById('lambda-daily-cost').textContent = `$${totalDailyCost.toFixed(4)}`;
+            document.getElementById('lambda-invocations').textContent = totalInvocations;
+            document.getElementById('lambda-regions').textContent = regions.length;
+
+            updateLambdaTable(data);
+        } catch (error) {
+            console.error('Lambda数据加载失败:', error);
+        }
+    }
+
+    function updateLambdaTable(resources) {
+        const tbody = document.getElementById('lambda-tbody');
+        tbody.innerHTML = '';
+        
+        if (resources.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-sleep"></i>
+                        <div>过去24小时内没有Lambda函数被调用</div>
+                        <small style="color: #7f8c8d; margin-top: 10px; display: block;">
+                            Lambda按使用量计费，未调用的函数不产生费用
+                        </small>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        resources.forEach(resource => {
+            const row = tbody.insertRow();
+            const costClass = getCostClass(resource.daily_cost);
+            const details = JSON.parse(resource.details);
+            
+            // 提取内存和调用次数
+            const memoryMatch = details.instance_type.match(/(\d+)MB/);
+            const invocationMatch = details.instance_type.match(/\((\d+)次\/24h\)/);
+            const memory = memoryMatch ? memoryMatch[1] + 'MB' : 'N/A';
+            const invocations = invocationMatch ? invocationMatch[1] : '0';
+            
+            row.innerHTML = `
+                <td><span class="resource-id">${resource.resource_id}</span></td>
+                <td>${memory}</td>
+                <td><i class="fas fa-map-marker-alt"></i> ${resource.region}</td>
+                <td><strong>${invocations}</strong></td>
+                <td class="${costClass}">$${resource.hourly_cost.toFixed(6)}</td>
+                <td class="${costClass}">$${resource.daily_cost.toFixed(4)}</td>
+            `;
+        });
+    }
+
+    async function refreshData() {
+        showLoading(true);
+        try {
+            await loadLambdaData();
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshData();
+        setInterval(refreshData, 180000);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+
+{% block title %}AWS成本监控 - 总览{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title"><i class="fas fa-chart-line"></i> 成本总览</h1>
+
+</div>
+
+<button class="refresh-btn" onclick="refreshData()">
+    <i class="fas fa-sync-alt"></i> 刷新数据
+</button>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>正在扫描AWS资源...</span>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        <div class="stat-value" id="hourly-cost">$0.00</div>
+        <div class="stat-label">每小时成本</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+        <div class="stat-value" id="daily-cost">$0.00</div>
+        <div class="stat-label">每日成本</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+        <div class="stat-value" id="current-month-cost">$0.00</div>
+        <div class="stat-label">当月实际成本</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-server"></i></div>
+        <div class="stat-value" id="resource-count">0</div>
+        <div class="stat-label">运行资源</div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3><i class="fas fa-chart-area"></i> 24小时成本趋势</h3>
+    <canvas id="costChart" width="400" height="120"></canvas>
+</div>
+
+<div class="content-card">
+    <h3><i class="fas fa-calendar-alt"></i> 月度成本趋势</h3>
+    <canvas id="monthlyChart" width="400" height="120"></canvas>
+</div>
+
+<div class="content-card">
+    <h3><i class="fas fa-list"></i> 资源详情</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="fas fa-tag"></i> 服务</th>
+                    <th><i class="fas fa-fingerprint"></i> 资源ID</th>
+                    <th><i class="fas fa-cog"></i> 类型</th>
+                    <th><i class="fas fa-map-marker-alt"></i> 区域</th>
+                    <th><i class="fas fa-clock"></i> 每小时</th>
+                    <th><i class="fas fa-calendar-day"></i> 每日</th>
+                    <th><i class="fas fa-calendar-alt"></i> 月度</th>
+                </tr>
+            </thead>
+            <tbody id="resources-tbody">
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <div>正在扫描AWS资源...</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let costChart, monthlyChart;
+
+    function initChart() {
+        const ctx = document.getElementById('costChart').getContext('2d');
+        costChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: '每小时成本 ($)',
+                    data: [],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#3498db',
+                    pointBorderColor: '#ffffff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        grid: { color: 'rgba(189, 195, 199, 0.3)' }
+                    },
+                    x: {
+                        grid: { color: 'rgba(189, 195, 199, 0.3)' }
+                    }
+                }
+            }
+        });
+        
+        const monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+        monthlyChart = new Chart(monthlyCtx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: '月度成本 ($)',
+                    data: [],
+                    backgroundColor: 'rgba(52, 152, 219, 0.8)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    }
+
+    async function loadCurrentCost() {
+        try {
+            const response = await fetch('/api/current_cost');
+            const data = await response.json();
+            
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+
+            document.getElementById('hourly-cost').textContent = `$${data.total_hourly.toFixed(2)}`;
+            document.getElementById('daily-cost').textContent = `$${data.total_daily.toFixed(2)}`;
+            document.getElementById('resource-count').textContent = data.details.length;
+
+            updateResourcesTable(data.details);
+        } catch (error) {
+            console.error('数据加载失败:', error);
+        }
+    }
+    
+    async function loadCurrentMonth() {
+        try {
+            const response = await fetch('/api/current_month');
+            const data = await response.json();
+            
+            document.getElementById('current-month-cost').textContent = `$${data.total_monthly_cost.toFixed(2)}`;
+        } catch (error) {
+            console.error('月度数据加载失败:', error);
+        }
+    }
+    
+    async function loadMonthlyTrend() {
+        try {
+            const response = await fetch('/api/monthly_summary');
+            const data = await response.json();
+            
+            const labels = data.map(item => item.year_month).reverse();
+            const costs = data.map(item => item.total_monthly_cost).reverse();
+            
+            monthlyChart.data.labels = labels;
+            monthlyChart.data.datasets[0].data = costs;
+            monthlyChart.update();
+        } catch (error) {
+            console.error('月度趋势数据加载失败:', error);
+        }
+    }
+
+    async function loadCostHistory() {
+        try {
+            const response = await fetch('/api/cost_history');
+            const data = await response.json();
+            
+            const labels = data.map(item => new Date(item.timestamp).toLocaleTimeString());
+            const costs = data.map(item => item.total_hourly_cost);
+            
+            costChart.data.labels = labels;
+            costChart.data.datasets[0].data = costs;
+            costChart.update();
+        } catch (error) {
+            console.error('历史数据加载失败:', error);
+        }
+    }
+
+    function updateResourcesTable(resources) {
+        const tbody = document.getElementById('resources-tbody');
+        tbody.innerHTML = '';
+        
+        if (resources.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <div>未发现运行中的资源</div>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        resources.forEach(resource => {
+            const row = tbody.insertRow();
+            const costClass = getCostClass(resource.daily_cost);
+            const details = JSON.parse(resource.details);
+            
+            row.innerHTML = `
+                <td>${getServiceBadge(resource.service_type)}</td>
+                <td><span class="resource-id">${resource.resource_id}</span></td>
+                <td>${details.instance_type || 'N/A'}</td>
+                <td><i class="fas fa-map-marker-alt"></i> ${resource.region}</td>
+                <td class="${costClass}">$${resource.hourly_cost.toFixed(4)}</td>
+                <td class="${costClass}">$${resource.daily_cost.toFixed(2)}</td>
+                <td class="${costClass}">$${(resource.daily_cost * 30).toFixed(2)}</td>
+            `;
+        });
+    }
+
+    async function refreshData() {
+        showLoading(true);
+        
+        try {
+            await Promise.all([
+                loadCurrentCost(),
+                loadCostHistory(),
+                loadCurrentMonth(),
+                loadMonthlyTrend()
+            ]);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initChart();
+        refreshData();
+        setInterval(refreshData, 180000);
+    });
+</script>
+{% endblock %}

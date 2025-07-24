@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}AWS成本监控 - EBS{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title"><i class="fas fa-compact-disc"></i> EBS 存储卷监控</h1>
+    <p class="page-subtitle">监控所有正在使用的EBS存储卷成本</p>
+</div>
+
+<button class="refresh-btn" onclick="refreshData()">
+    <i class="fas fa-sync-alt"></i> 刷新EBS数据
+</button>
+
+<div class="loading" id="loading">
+    <div class="spinner"></div>
+    <span>正在扫描EBS存储卷...</span>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-compact-disc"></i></div>
+        <div class="stat-value" id="ebs-count">0</div>
+        <div class="stat-label">存储卷数量</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+        <div class="stat-value" id="ebs-daily-cost">$0.00</div>
+        <div class="stat-label">每日成本</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-archive"></i></div>
+        <div class="stat-value" id="ebs-total-size">0 GB</div>
+        <div class="stat-label">总存储量</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-globe"></i></div>
+        <div class="stat-value" id="ebs-regions">0</div>
+        <div class="stat-label">覆盖区域</div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3><i class="fas fa-list"></i> EBS 存储卷详情</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th><i class="fas fa-fingerprint"></i> 卷ID</th>
+                    <th><i class="fas fa-cog"></i> 类型和大小</th>
+                    <th><i class="fas fa-map-marker-alt"></i> 区域</th>
+                    <th><i class="fas fa-clock"></i> 每小时成本</th>
+                    <th><i class="fas fa-calendar-day"></i> 每日成本</th>
+                    <th><i class="fas fa-calendar-alt"></i> 月度预估</th>
+                </tr>
+            </thead>
+            <tbody id="ebs-tbody">
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <div>正在扫描EBS存储卷...</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="content-card">
+    <div style="background: #e8f4fd; padding: 20px; border-radius: 10px; border-left: 4px solid #3498db;">
+        <h4><i class="fas fa-info-circle"></i> EBS计费说明</h4>
+        <p style="margin-top: 10px; color: #2c3e50;">
+            • EBS按配置的存储容量计费，无论是否使用<br>
+            • gp3: $0.08/GB/月，gp2: $0.10/GB/月<br>
+            • 只显示状态为"in-use"的存储卷
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function loadEBSData() {
+        try {
+            const response = await fetch('/api/service_data/ebs');
+            const data = await response.json();
+            
+            const totalDailyCost = data.reduce((sum, item) => sum + item.daily_cost, 0);
+            const regions = [...new Set(data.map(item => item.region))];
+            
+            let totalSize = 0;
+            data.forEach(item => {
+                const details = JSON.parse(item.details);
+                const sizeMatch = details.instance_type.match(/(\d+)GB/);
+                if (sizeMatch) {
+                    totalSize += parseInt(sizeMatch[1]);
+                }
+            });
+            
+            document.getElementById('ebs-count').textContent = data.length;
+            document.getElementById('ebs-daily-cost').textContent = `$${totalDailyCost.toFixed(2)}`;
+            document.getElementById('ebs-total-size').textContent = `${totalSize} GB`;
+            document.getElementById('ebs-regions').textContent = regions.length;
+
+            updateEBSTable(data);
+        } catch (error) {
+            console.error('EBS数据加载失败:', error);
+        }
+    }
+
+    function updateEBSTable(resources) {
+        const tbody = document.getElementById('ebs-tbody');
+        tbody.innerHTML = '';
+        
+        if (resources.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <div>未发现正在使用的EBS存储卷</div>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        resources.forEach(resource => {
+            const row = tbody.insertRow();
+            const costClass = getCostClass(resource.daily_cost);
+            const details = JSON.parse(resource.details);
+            
+            row.innerHTML = `
+                <td><span class="resource-id">${resource.resource_id}</span></td>
+                <td>${details.instance_type}</td>
+                <td><i class="fas fa-map-marker-alt"></i> ${resource.region}</td>
+                <td class="${costClass}">$${resource.hourly_cost.toFixed(4)}</td>
+                <td class="${costClass}">$${resource.daily_cost.toFixed(2)}</td>
+                <td class="${costClass}">$${(resource.daily_cost * 30).toFixed(2)}</td>
+            `;
+        });
+    }
+
+    async function refreshData() {
+        showLoading(true);
+        try {
+            await loadEBSData();
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshData();
+        setInterval(refreshData, 180000);
+    });
+</script>
+{% endblock %}
