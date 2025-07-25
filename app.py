@@ -11,9 +11,14 @@ import json
 from datetime import datetime, timedelta
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+import threading
+from cost_collector import CostCollector
 
 app = Flask(__name__)
 CORS(app)  # 启用CORS支持异步请求
+
+# 全局扫描状态
+scan_status = {'running': False, 'progress': 0, 'results': None, 'error': None}
 
 def get_db_connection():
     """获取数据库连接"""
@@ -80,6 +85,11 @@ def amazonq_page():
 def cloudfront_page():
     """主仪表板"""
     return render_template('cloudfront.html')
+
+@app.route('/all-resources')
+def all_resources_page():
+    """所有资源扫描页面"""
+    return render_template('all_resources.html')
 
 @app.route('/api/current_cost')
 def current_cost():
@@ -305,6 +315,111 @@ def service_data(service_type):
     conn.close()
     
     return jsonify([dict(row) for row in resources])
+
+@app.route('/api/scan-all-resources')
+def scan_all_resources():
+    """异步扫描所有AWS资源"""
+    if scan_status['running']:
+        return jsonify({'error': '扫描正在进行中'}), 400
+    
+    threading.Thread(target=async_scan_resources, daemon=True).start()
+    return jsonify({'success': True, 'message': '扫描已启动'})
+
+@app.route('/api/scan-status')
+def scan_status_api():
+    """获取扫描状态"""
+    return jsonify(scan_status)
+
+def async_scan_resources():
+    """异步扫描资源和成本"""
+    global scan_status
+    scan_status = {'running': True, 'progress': 0, 'results': None, 'error': None}
+    
+    try:
+        import boto3
+        collector = CostCollector()
+        collector.session = boto3.Session()
+        
+        scan_status['progress'] = 20
+        
+        with ThreadPoolExecutor(max_workers=20) as executor:
+            resource_future = executor.submit(collector.get_all_resources)
+            cost_future = executor.submit(collector.get_running_services)
+            
+            scan_status['progress'] = 60
+            
+            resources = resource_future.result()
+            cost_services = cost_future.result()
+            
+            scan_status['progress'] = 80
+        
+        # 合并成本数据
+        resource_costs = {}
+        for service in cost_services:
+            key = f"{service['region']}_{service['service']}_{service['resource_id']}"
+            resource_costs[key] = {
+                'hourly_cost': service['hourly_cost'],
+                'daily_cost': service['daily_cost']
+            }
+        
+        for resource in resources:
+            key = f"{resource['region']}_{resource['service']}_{resource['resource_id']}"
+            if key in resource_costs:
+                resource.update(resource_costs[key])
+            else:
+                resource['hourly_cost'] = 0.0
+                resource['daily_cost'] = 0.0
+        
+        # 分组结果
+        grouped_resources = {}
+        total_daily_cost = 0
+        
+        for resource in resources:
+            service = resource['service']
+            region = resource['region']
+            
+            if region not in grouped_resources:
+                grouped_resources[region] = {}
+            if service not in grouped_resources[region]:
+                grouped_resources[region][service] = []
+            
+            grouped_resources[region][service].append(resource)
+            total_daily_cost += resource.get('daily_cost', 0)
+        
+        # 导出文件
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"data/aws_all_resources_{timestamp}.json"
+        
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump({
+                'resources': grouped_resources,
+                'summary': {
+                    'total_resources': len(resources),
+                    'total_daily_cost': total_daily_cost,
+                    'scan_time': datetime.now().isoformat()
+                }
+            }, f, indent=2, ensure_ascii=False, default=str)
+        
+        scan_status = {
+            'running': False,
+            'progress': 100,
+            'results': {
+                'resources': grouped_resources,
+                'export_file': filename,
+                'total_resources': len(resources),
+                'total_daily_cost': total_daily_cost,
+                'timestamp': datetime.now().isoformat()
+            },
+            'error': None
+        }
+        
+    except Exception as e:
+        scan_status = {
+            'running': False,
+            'progress': 0,
+            'results': None,
+            'error': str(e)
+        }
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

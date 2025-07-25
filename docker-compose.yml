@@ -2,7 +2,11 @@ version: '3.8'
 
 services:
   aws-cost-monitor:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: aws-cost-monitor:latest
+    container_name: aws-cost-monitor
     ports:
       - "80:80"
     volumes:
@@ -11,3 +15,6 @@ services:
     environment:
       - AWS_DEFAULT_REGION=us-east-1
     restart: unless-stopped
+    labels:
+      - "com.aws-cost-monitor.description=AWS成本监控系统"
+      - "com.aws-cost-monitor.version=1.0.0"

@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}所有资源扫描{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🔍 AWS所有资源扫描</h1>
+    <p class="page-subtitle">异步扫描所有AWS资源并计算每日成本</p>
+</div>
+
+<div class="content-card">
+    <button id="scanBtn" class="refresh-btn" onclick="startScan()">
+        🚀 开始扫描所有资源
+    </button>
+                    
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <span>正在扫描资源...</span>
+    </div>
+    
+    <div id="status"></div>
+    
+    <div id="progress" style="display:none; margin: 20px 0;">
+        <div style="background: #e9ecef; height: 20px; border-radius: 10px; overflow: hidden;">
+            <div id="progressBar" style="background: linear-gradient(135deg, #667eea, #764ba2); height: 100%; width: 0%; transition: width 0.3s;"></div>
+        </div>
+        <div id="progressText" style="text-align: center; margin-top: 10px; font-weight: 600;">0%</div>
+    </div>
+    
+    <div id="summary" class="stats-grid" style="display:none; margin: 30px 0;">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-server"></i></div>
+            <div class="stat-value" id="totalResources">0</div>
+            <div class="stat-label">总资源数</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+            <div class="stat-value" id="dailyCost">$0.00</div>
+            <div class="stat-label">预估每日成本</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-download"></i></div>
+            <div class="stat-value" id="exportFile" style="font-size: 1.2em;">-</div>
+            <div class="stat-label">导出文件</div>
+        </div>
+    </div>
+    
+    <div id="results"></div>
+</div>
+
+<script>
+function startScan() {
+    const btn = document.getElementById('scanBtn');
+    showLoading(true);
+    document.getElementById('progress').style.display = 'block';
+    document.getElementById('summary').style.display = 'none';
+    document.getElementById('results').innerHTML = '';
+    
+    fetch('/api/scan-all-resources')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                checkScanStatus();
+            } else {
+                showLoading(false);
+                document.getElementById('status').innerHTML = `<div style="color: var(--accent-color); padding: 15px; text-align: center;">❌ 启动失败: ${data.error}</div>`;
+            }
+        });
+}
+
+function checkScanStatus() {
+    fetch('/api/scan-status')
+        .then(response => response.json())
+        .then(data => {
+            updateProgress(data.progress);
+            
+            if (data.running) {
+                setTimeout(checkScanStatus, 1000);
+            } else if (data.results) {
+                showLoading(false);
+                const results = data.results;
+                document.getElementById('status').innerHTML = 
+                    `<div style="background: rgba(39, 174, 96, 0.1); color: #27ae60; padding: 15px; border-radius: 10px; margin: 20px 0; text-align: center; font-weight: 600;">✅ 扫描完成！</div>`;
+                
+                document.getElementById('totalResources').textContent = results.total_resources;
+                document.getElementById('dailyCost').textContent = `$${results.total_daily_cost.toFixed(2)}`;
+                document.getElementById('exportFile').textContent = results.export_file.split('/').pop();
+                document.getElementById('summary').style.display = 'grid';
+                
+                displayResults(results.resources);
+            } else if (data.error) {
+                showLoading(false);
+                document.getElementById('status').innerHTML = 
+                    `<div style="color: var(--accent-color); padding: 15px; text-align: center;">❌ 扫描失败: ${data.error}</div>`;
+            }
+        });
+}
+
+function updateProgress(progress) {
+    document.getElementById('progressBar').style.width = progress + '%';
+    document.getElementById('progressText').textContent = progress + '%';
+}
+
+function displayResults(resources) {
+    const results = document.getElementById('results');
+    let html = '';
+    
+    for (const [region, regionResources] of Object.entries(resources)) {
+        if (Object.keys(regionResources).length === 0) continue;
+        
+        html += `<div class="content-card">
+            <h3 style="color: var(--primary-color); margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--secondary-color);">
+                📍 ${region}
+            </h3>`;
+        
+        for (const [service, items] of Object.entries(regionResources)) {
+            if (items.length === 0) continue;
+            
+            html += `<h4 style="color: var(--secondary-color); margin: 20px 0 15px 0;">
+                ${getServiceIcon(service)} ${service} 
+                <span style="background: var(--secondary-color); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; margin-left: 10px;">${items.length}</span>
+            </h4>`;
+            
+            html += `<div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>资源ID</th>
+                            <th>详情</th>
+                            <th>每日成本</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+            items.forEach(item => {
+                const dailyCost = item.daily_cost || 0;
+                const costClass = getCostClass(dailyCost);
+                const costDisplay = dailyCost > 0 ? `$${dailyCost.toFixed(2)}` : '免费';
+                
+                html += `<tr>
+                    <td><span class="resource-id">${item.resource_id}</span></td>
+                    <td>${formatResourceDetails(item)}</td>
+                    <td><span class="${costClass}">${costDisplay}</span></td>
+                </tr>`;
+            });
+            
+            html += `</tbody></table></div>`;
+        }
+        
+        html += `</div>`;
+    }
+    
+    results.innerHTML = html || '<div class="empty-state"><i class="fas fa-search"></i><p>未找到任何资源</p></div>';
+}
+
+function getServiceIcon(service) {
+    const icons = {
+        'EC2': '💻', 'RDS': '🗄️', 'Lambda': '⚡', 'S3': '🪣', 'EBS': '💾',
+        'VPC': '🌐', 'Subnet': '🔗', 'NAT_Gateway': '🚪', 'ECS_Cluster': '🐳',
+        'ECS_Service': '⚙️', 'EKS': '☸️', 'DynamoDB': '📊', 'SNS': '📢',
+        'SQS': '📬', 'CloudWatch_Alarm': '⚠️', 'CloudWatch_Logs': '📝',
+        'LoadBalancer': '⚖️', 'IAM_User': '👤', 'IAM_Role': '🎭', 'IAM_Policy': '📋',
+        'CloudFront': '🌍', 'Route53': '🌐', 'AMI': '💿', 'Snapshot': '📸'
+    };
+    return icons[service] || '🔧';
+}
+
+function formatResourceDetails(item) {
+    let details = [];
+    for (const [key, value] of Object.entries(item)) {
+        if (key !== 'resource_id' && key !== 'service' && key !== 'region' && 
+            key !== 'hourly_cost' && key !== 'daily_cost' && value) {
+            details.push(`${key}: ${value}`);
+        }
+    }
+    return details.join(' | ') || '-';
+}
+</script>
+{% endblock %}

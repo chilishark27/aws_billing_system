@@ -1,0 +1,3587 @@
+{
+  "resources": {
+    "us-east-1": {
+      "Lambda": [
+        {
+          "service": "Lambda",
+          "resource_id": "StepFunctionsSample-Athen-LambdaForStringGeneratio-zpXWRP5Uh47z",
+          "region": "us-east-1",
+          "runtime": "python3.9",
+          "memory": 128,
+          "last_modified": "2024-07-18T11:49:03.909+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "python-0613-03",
+          "region": "us-east-1",
+          "runtime": "python3.10",
+          "memory": 128,
+          "last_modified": "2024-06-13T08:06:41.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "cathy_sqs_lambda_20240711",
+          "region": "us-east-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-07-31T10:02:56.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "python-06-0613",
+          "region": "us-east-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-06-13T08:32:19.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "lambda20240802-test",
+          "region": "us-east-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-08-02T05:52:18.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "python-0613-01",
+          "region": "us-east-1",
+          "runtime": "python3.10",
+          "memory": 128,
+          "last_modified": "2024-06-13T07:19:20.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "SQS-Lambda",
+          "region": "us-east-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-07-08T10:04:56.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "layerlambda_20240804",
+          "region": "us-east-1",
+          "runtime": "python3.10",
+          "memory": 128,
+          "last_modified": "2024-08-04T12:23:52.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "python-0613-02",
+          "region": "us-east-1",
+          "runtime": "python3.10",
+          "memory": 128,
+          "last_modified": "2024-06-13T07:54:35.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "config_EventBridge_SQS_Lambda",
+          "region": "us-east-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-07-10T07:43:01.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "CloudTrail_Event_SQS_Lambda",
+          "region": "us-east-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-07-10T08:19:50.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "config_network_change",
+          "region": "us-east-1",
+          "runtime": "python3.11",
+          "memory": 128,
+          "last_modified": "2024-07-10T07:35:50.405+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "KinesisToLambda-20240801",
+          "region": "us-east-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-08-26T01:57:23.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "EC2_Status_Change",
+          "region": "us-east-1",
+          "runtime": "python3.11",
+          "memory": 128,
+          "last_modified": "2024-07-04T06:21:52.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "python-0613-04",
+          "region": "us-east-1",
+          "runtime": "python3.10",
+          "memory": 128,
+          "last_modified": "2024-06-13T08:11:35.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "python-05-0613",
+          "region": "us-east-1",
+          "runtime": "python3.10",
+          "memory": 128,
+          "last_modified": "2024-06-13T08:14:49.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "EventBridge_SQS_Lambda",
+          "region": "us-east-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-07-11T07:54:33.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "GlueEventSQSLambda",
+          "region": "us-east-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-07-24T02:23:06.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "SNS": [
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:us-east-1:851725183490:CloudWatchAlarmsForCloudTrail-AlarmNotificationTopic-SQrdIUbfzMNI",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:us-east-1:851725183490:EvenetBridge_NetworkChanges_To_SNS",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:us-east-1:851725183490:cathy_20240711",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:us-east-1:851725183490:cloudwatch20240626-AlarmNotificationTopic-mfGLakXxpNAP",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:us-east-1:851725183490:s3put-sns",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:us-east-1:851725183490:sns_cloudtrail_eventbridge",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:us-east-1:851725183490:templateeventbridge2SNS_EC2_Pending_Stopping",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Snapshot": [
+        {
+          "service": "Snapshot",
+          "resource_id": "snap-03b83a6edfbc8246a",
+          "region": "us-east-1",
+          "state": "completed",
+          "volume_size": 1,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Snapshot",
+          "resource_id": "snap-0e3b23198b9c5690d",
+          "region": "us-east-1",
+          "state": "completed",
+          "volume_size": 1,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "VPC": [
+        {
+          "service": "VPC",
+          "resource_id": "vpc-088f10d4d211b0cd2",
+          "region": "us-east-1",
+          "cidr": "10.0.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0b8696e77261e379d",
+          "region": "us-east-1",
+          "cidr": "10.0.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0d1a10258a0d70f24",
+          "region": "us-east-1",
+          "cidr": "10.100.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Subnet": [
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-05574447f5e1f3e79",
+          "region": "us-east-1",
+          "vpc_id": "vpc-088f10d4d211b0cd2",
+          "cidr": "10.0.16.0/20",
+          "az": "us-east-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0021b1bc41c4dbf2d",
+          "region": "us-east-1",
+          "vpc_id": "vpc-0b8696e77261e379d",
+          "cidr": "10.0.144.0/20",
+          "az": "us-east-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-08b8a53704b0e7c71",
+          "region": "us-east-1",
+          "vpc_id": "vpc-088f10d4d211b0cd2",
+          "cidr": "10.0.128.0/20",
+          "az": "us-east-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0054b89686230460b",
+          "region": "us-east-1",
+          "vpc_id": "vpc-0b8696e77261e379d",
+          "cidr": "10.0.0.0/20",
+          "az": "us-east-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0292988c576be6c52",
+          "region": "us-east-1",
+          "vpc_id": "vpc-0b8696e77261e379d",
+          "cidr": "10.0.128.0/20",
+          "az": "us-east-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0e7fadb4605a6d308",
+          "region": "us-east-1",
+          "vpc_id": "vpc-088f10d4d211b0cd2",
+          "cidr": "10.0.0.0/20",
+          "az": "us-east-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-087e86dd418546246",
+          "region": "us-east-1",
+          "vpc_id": "vpc-0d1a10258a0d70f24",
+          "cidr": "10.100.100.0/25",
+          "az": "us-east-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-022ec14feee5970d7",
+          "region": "us-east-1",
+          "vpc_id": "vpc-0b8696e77261e379d",
+          "cidr": "10.0.16.0/20",
+          "az": "us-east-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-059e433e4d9c6b3ae",
+          "region": "us-east-1",
+          "vpc_id": "vpc-088f10d4d211b0cd2",
+          "cidr": "10.0.144.0/20",
+          "az": "us-east-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0bdc05d7b393447a2",
+          "region": "us-east-1",
+          "vpc_id": "vpc-0d1a10258a0d70f24",
+          "cidr": "10.100.100.128/25",
+          "az": "us-east-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "SQS": [
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/CloudTrail_Event_SQS_Lambda",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/Config_Event_SQS_Lambda",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/Glue-S3-Evenet-SQS",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/SQS_First",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/cathy_sqs_20240711",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/kinesis-sqs",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/templateeventbridge2sqs-MySqsQueue-vTUVEGEDuwCA",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/veeam_cloud_backup_0b177020a76742339154eb161880bf66",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/veeam_cloud_backup_3d13b8a7a7fa43279d5205e50d0c819f",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/veeam_cloud_backup_8e81416827d74a819348c9c33b9ed852",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.us-east-1.amazonaws.com/851725183490/workSQS",
+          "region": "us-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "CloudWatch_Alarm": [
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailAuthorizationFailures",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailChanges",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailConsoleSignInFailures",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailEC2InstanceChanges",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailEC2LargeInstanceChanges",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailGatewayChanges",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailIAMPolicyChanges",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailNetworkAclChanges",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailSecurityGroupChanges",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "CloudTrailVpcChanges",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "London-eu-west-2-alb-awsroute53-41c7b846-5200-4231-9ecb-01097722eb67-Low-HealthCheckStatus",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "London-eu-west-2-awsroute53-13c8f60d-18e0-4e1a-a14b-888e6fdc4011-Low-HealthCheckStatus",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "alb-alerm",
+          "region": "us-east-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "amazon-linux-cpu-alarm",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "awsec2-i-0c3493003ef5533b6-GreaterThanOrEqualToThreshold-CPUUtilization",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "ec2-20240730-01",
+          "region": "us-east-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "test",
+          "region": "us-east-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "us-east-1-alb-awsroute53-6d501c30-8654-4c02-8d70-4c81ec70de88-Low-HealthCheckStatus",
+          "region": "us-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "CloudWatch_Logs": [
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws-glue/crawlers",
+          "region": "us-east-1",
+          "stored_bytes": 2627,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/eks/eks-cluster-demo/cluster",
+          "region": "us-east-1",
+          "stored_bytes": 91297,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/eks/my-eks-cluster/cluster",
+          "region": "us-east-1",
+          "stored_bytes": 558279419,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/CloudTrail_Event_SQS_Lambda",
+          "region": "us-east-1",
+          "stored_bytes": 329792,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/EC2_Status_Change",
+          "region": "us-east-1",
+          "stored_bytes": 5219666,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/EventBridge_SQS_Lambda",
+          "region": "us-east-1",
+          "stored_bytes": 878171,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/GlueEventSQSLambda",
+          "region": "us-east-1",
+          "stored_bytes": 889067650,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/KinesisToLambda-20240801",
+          "region": "us-east-1",
+          "stored_bytes": 2012267,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/LogS3DataEvents",
+          "region": "us-east-1",
+          "stored_bytes": 4277,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/SQS-Lambda",
+          "region": "us-east-1",
+          "stored_bytes": 609364,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/StepFunctionsSample-Athen-LambdaForStringGeneratio-zpXWRP5Uh47z",
+          "region": "us-east-1",
+          "stored_bytes": 867,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/cathy_sqs_lambda_20240711",
+          "region": "us-east-1",
+          "stored_bytes": 1420178,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/config_EventBridge_SQS_Lambda",
+          "region": "us-east-1",
+          "stored_bytes": 9119607,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/config_network_change",
+          "region": "us-east-1",
+          "stored_bytes": 240625,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/john-efs-EFSFileAuthentic-CognitoRoleMappingTransf-fzDsqqXZUgc2",
+          "region": "us-east-1",
+          "stored_bytes": 2728,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/john_s3_sync",
+          "region": "us-east-1",
+          "stored_bytes": 446,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/lambda_VPC",
+          "region": "us-east-1",
+          "stored_bytes": 60990,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/layerlambda_20240804",
+          "region": "us-east-1",
+          "stored_bytes": 4594,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/python-05-0613",
+          "region": "us-east-1",
+          "stored_bytes": 765,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/python-06-0613",
+          "region": "us-east-1",
+          "stored_bytes": 2744,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/python-0613-01",
+          "region": "us-east-1",
+          "stored_bytes": 890,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/python-0613-02",
+          "region": "us-east-1",
+          "stored_bytes": 730,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/python-0613-03",
+          "region": "us-east-1",
+          "stored_bytes": 2032,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/python-0613-04",
+          "region": "us-east-1",
+          "stored_bytes": 1300,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/python-20240613",
+          "region": "us-east-1",
+          "stored_bytes": 893,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/python-test-20240613-02",
+          "region": "us-east-1",
+          "stored_bytes": 1744,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/rds/instance/database-mysql57/error",
+          "region": "us-east-1",
+          "stored_bytes": 7767,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/rds/instance/mysql5744-s/error",
+          "region": "us-east-1",
+          "stored_bytes": 7163,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/rds/instance/mysql5744-shapshot-restore/error",
+          "region": "us-east-1",
+          "stored_bytes": 4307,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/vendedlogs/pipes/kinesis-to-sns",
+          "region": "us-east-1",
+          "stored_bytes": 739860,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/ecs/DemoTask-Kent",
+          "region": "us-east-1",
+          "stored_bytes": 6347171,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "RDSOSMetrics",
+          "region": "us-east-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "aws-cloudtrail-logs-851725183490-e4041636",
+          "region": "us-east-1",
+          "stored_bytes": 4381951133,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "aws-waf-logs-john",
+          "region": "us-east-1",
+          "stored_bytes": 220635,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ]
+    },
+    "us-west-2": {
+      "VPC": [
+        {
+          "service": "VPC",
+          "resource_id": "vpc-01134072c4d64b8da",
+          "region": "us-west-2",
+          "cidr": "10.0.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0ccccc6b7c13b59b9",
+          "region": "us-west-2",
+          "cidr": "172.31.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Subnet": [
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-01fbe7dadb6191bf1",
+          "region": "us-west-2",
+          "vpc_id": "vpc-0ccccc6b7c13b59b9",
+          "cidr": "172.31.16.0/20",
+          "az": "us-west-2b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-01a8be4f58fbd32b3",
+          "region": "us-west-2",
+          "vpc_id": "vpc-0ccccc6b7c13b59b9",
+          "cidr": "172.31.32.0/20",
+          "az": "us-west-2a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0ca5851fce54226fa",
+          "region": "us-west-2",
+          "vpc_id": "vpc-0ccccc6b7c13b59b9",
+          "cidr": "172.31.0.0/20",
+          "az": "us-west-2c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-019b26f3f434dd7a5",
+          "region": "us-west-2",
+          "vpc_id": "vpc-0ccccc6b7c13b59b9",
+          "cidr": "172.31.48.0/20",
+          "az": "us-west-2d",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ]
+    },
+    "ap-southeast-1": {
+      "EC2": [
+        {
+          "service": "EC2",
+          "resource_id": "i-07e4e51f615149e9c",
+          "region": "ap-southeast-1",
+          "state": "stopped",
+          "type": "t3a.small",
+          "launch_time": "2025-07-24T02:40:21+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "EC2",
+          "resource_id": "i-0f014794e5b75fc74",
+          "region": "ap-southeast-1",
+          "state": "stopped",
+          "type": "t3a.small",
+          "launch_time": "2025-01-23T03:21:40+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "EC2",
+          "resource_id": "i-066d237609695eb32",
+          "region": "ap-southeast-1",
+          "state": "stopped",
+          "type": "t3.medium",
+          "launch_time": "2025-07-24T02:01:21+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "EC2",
+          "resource_id": "i-018e379ab505a01a5",
+          "region": "ap-southeast-1",
+          "state": "stopped",
+          "type": "t3.medium",
+          "launch_time": "2025-07-24T03:32:59+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "EC2",
+          "resource_id": "i-0d9218d20f691c7f5",
+          "region": "ap-southeast-1",
+          "state": "stopped",
+          "type": "c5.xlarge",
+          "launch_time": "2025-07-24T03:32:59+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "EC2",
+          "resource_id": "i-0c920bace4404ae2b",
+          "region": "ap-southeast-1",
+          "state": "running",
+          "type": "t4g.medium",
+          "launch_time": "2025-07-25T02:26:26+00:00",
+          "hourly_cost": 0.038639999999999994,
+          "daily_cost": 0.9273599999999999
+        },
+        {
+          "service": "EC2",
+          "resource_id": "i-01b832ec9df5d4fad",
+          "region": "ap-southeast-1",
+          "state": "stopped",
+          "type": "t3.medium",
+          "launch_time": "2025-07-22T08:45:09+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "AMI": [
+        {
+          "service": "AMI",
+          "resource_id": "ami-0340fbe0cf7c54911",
+          "region": "ap-southeast-1",
+          "name": "PPG-jump",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "AMI",
+          "resource_id": "ami-0b2af2b3e5ab3f5a1",
+          "region": "ap-southeast-1",
+          "name": "john",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Snapshot": [
+        {
+          "service": "Snapshot",
+          "resource_id": "snap-077ef421ebdc2e157",
+          "region": "ap-southeast-1",
+          "state": "completed",
+          "volume_size": 1,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Snapshot",
+          "resource_id": "snap-06e080f2da7f7a761",
+          "region": "ap-southeast-1",
+          "state": "completed",
+          "volume_size": 30,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Snapshot",
+          "resource_id": "snap-057ae6526e2fe4048",
+          "region": "ap-southeast-1",
+          "state": "completed",
+          "volume_size": 30,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Snapshot",
+          "resource_id": "snap-0204b317340c5e4d3",
+          "region": "ap-southeast-1",
+          "state": "completed",
+          "volume_size": 1,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Lambda": [
+        {
+          "service": "Lambda",
+          "resource_id": "John_Python",
+          "region": "ap-southeast-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-07-16T09:59:05.963+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "james",
+          "region": "ap-southeast-1",
+          "runtime": "python3.12",
+          "memory": 128,
+          "last_modified": "2024-08-06T07:29:31.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "james-test-vpn-arm",
+          "region": "ap-southeast-1",
+          "runtime": "python3.13",
+          "memory": 128,
+          "last_modified": "2025-01-15T10:05:19.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "test-net6",
+          "region": "ap-southeast-1",
+          "runtime": "dotnet6",
+          "memory": 512,
+          "last_modified": "2024-06-24T08:05:26.047+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "james-update-vpn",
+          "region": "ap-southeast-1",
+          "runtime": "python3.13",
+          "memory": 128,
+          "last_modified": "2025-01-15T08:13:39.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "johns3_sync",
+          "region": "ap-southeast-1",
+          "runtime": "python3.9",
+          "memory": 512,
+          "last_modified": "2025-04-29T08:44:06.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Lambda",
+          "resource_id": "testjohnjjj-EFSFileManagerAPI-1IQLE658Q-APIHandler-xLhoxvgyJDgn",
+          "region": "ap-southeast-1",
+          "runtime": "python3.11",
+          "memory": 128,
+          "last_modified": "2024-12-10T10:02:15.357+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "DynamoDB": [
+        {
+          "service": "DynamoDB",
+          "resource_id": "oc-network-tf-dynamodb-lock-poc",
+          "region": "ap-southeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "DynamoDB",
+          "resource_id": "test",
+          "region": "ap-southeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "EBS": [
+        {
+          "service": "EBS",
+          "resource_id": "vol-0fe31c0e969f72f5d",
+          "region": "ap-southeast-1",
+          "state": "in-use",
+          "size": 30,
+          "type": "gp3",
+          "hourly_cost": 0.004,
+          "daily_cost": 0.096
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-00cb67d19b711e7df",
+          "region": "ap-southeast-1",
+          "state": "in-use",
+          "size": 50,
+          "type": "gp2",
+          "hourly_cost": 0.008333333333333333,
+          "daily_cost": 0.2
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-07da73df0d03955a3",
+          "region": "ap-southeast-1",
+          "state": "in-use",
+          "size": 75,
+          "type": "gp2",
+          "hourly_cost": 0.012499999999999999,
+          "daily_cost": 0.3
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-0dc6c7064707b0c97",
+          "region": "ap-southeast-1",
+          "state": "in-use",
+          "size": 100,
+          "type": "gp3",
+          "hourly_cost": 0.013333333333333334,
+          "daily_cost": 0.32
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-04e83bee4bfe72fa9",
+          "region": "ap-southeast-1",
+          "state": "in-use",
+          "size": 50,
+          "type": "gp3",
+          "hourly_cost": 0.006666666666666667,
+          "daily_cost": 0.16
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-06fce3dce1be170a1",
+          "region": "ap-southeast-1",
+          "state": "in-use",
+          "size": 20,
+          "type": "gp3",
+          "hourly_cost": 0.0026666666666666666,
+          "daily_cost": 0.064
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-0b56a99b80db33a68",
+          "region": "ap-southeast-1",
+          "state": "in-use",
+          "size": 20,
+          "type": "gp3",
+          "hourly_cost": 0.0026666666666666666,
+          "daily_cost": 0.064
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-042b034546c30d039",
+          "region": "ap-southeast-1",
+          "state": "in-use",
+          "size": 1,
+          "type": "gp3",
+          "hourly_cost": 0.00013333333333333334,
+          "daily_cost": 0.0032
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-036e11c2e01fe1a00",
+          "region": "ap-southeast-1",
+          "state": "in-use",
+          "size": 30,
+          "type": "gp3",
+          "hourly_cost": 0.004,
+          "daily_cost": 0.096
+        }
+      ],
+      "VPC": [
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0afe1e315d7953340",
+          "region": "ap-southeast-1",
+          "cidr": "10.1.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-08fdf2f67ee5dbacb",
+          "region": "ap-southeast-1",
+          "cidr": "10.0.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-00d6afb2d2895e427",
+          "region": "ap-southeast-1",
+          "cidr": "10.119.0.0/20",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0de673719ea0a90c4",
+          "region": "ap-southeast-1",
+          "cidr": "172.19.0.0/19",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0e14f67fa37344104",
+          "region": "ap-southeast-1",
+          "cidr": "172.16.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0c3abe4c5ec7695fd",
+          "region": "ap-southeast-1",
+          "cidr": "10.0.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0598f2e9f67a0e046",
+          "region": "ap-southeast-1",
+          "cidr": "172.31.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-09f19047a2484f04b",
+          "region": "ap-southeast-1",
+          "cidr": "192.168.10.0/24",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Subnet": [
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-02a2a6727f15aa4cf",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0598f2e9f67a0e046",
+          "cidr": "172.31.96.0/20",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0a9cf7383902751e9",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0e14f67fa37344104",
+          "cidr": "172.16.32.0/27",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-014bf4f0e203099d2",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0e14f67fa37344104",
+          "cidr": "172.16.160.0/28",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0af329dd0ddc91808",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-08fdf2f67ee5dbacb",
+          "cidr": "10.0.102.0/24",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0b59749cebd1d01a7",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-00d6afb2d2895e427",
+          "cidr": "10.119.1.0/24",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-093b6a5fc5caf956f",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0e14f67fa37344104",
+          "cidr": "172.16.128.0/20",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0d3b59c190aa6c39a",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0e14f67fa37344104",
+          "cidr": "172.16.144.0/20",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-06e556d544ebfd21e",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0e14f67fa37344104",
+          "cidr": "172.16.0.0/27",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-05144547174a971a6",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0598f2e9f67a0e046",
+          "cidr": "172.31.128.0/20",
+          "az": "ap-southeast-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0614890a195c053fb",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0de673719ea0a90c4",
+          "cidr": "172.19.1.0/27",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0cfb4883aaa0c4d4c",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0598f2e9f67a0e046",
+          "cidr": "172.31.112.0/20",
+          "az": "ap-southeast-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-044e246cfda8913b9",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0598f2e9f67a0e046",
+          "cidr": "172.31.0.0/20",
+          "az": "ap-southeast-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0a613189abc64f717",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0de673719ea0a90c4",
+          "cidr": "172.19.18.0/24",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-037c0c41cbd06f026",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0598f2e9f67a0e046",
+          "cidr": "172.31.80.0/20",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0e279abd0a446d6c2",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0598f2e9f67a0e046",
+          "cidr": "172.31.32.0/20",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0ae691d221264527f",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0598f2e9f67a0e046",
+          "cidr": "172.31.16.0/20",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-048f1a958fbbf9df3",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-08fdf2f67ee5dbacb",
+          "cidr": "10.0.2.0/24",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-02fcb28285815f5dc",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-08fdf2f67ee5dbacb",
+          "cidr": "10.0.1.0/24",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0bd4fe7d8110a42f6",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0598f2e9f67a0e046",
+          "cidr": "172.31.48.0/20",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-094680f13037ab119",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0afe1e315d7953340",
+          "cidr": "10.1.102.0/24",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-06ac413150a9eaa45",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0598f2e9f67a0e046",
+          "cidr": "172.31.64.0/20",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0ca147f87c58deeb4",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-08fdf2f67ee5dbacb",
+          "cidr": "10.0.101.0/24",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-045bf858de155d09e",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-09f19047a2484f04b",
+          "cidr": "192.168.10.128/25",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-07b70f72863235144",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-08fdf2f67ee5dbacb",
+          "cidr": "10.0.3.0/24",
+          "az": "ap-southeast-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0bea2d8aabf9ee92d",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-08fdf2f67ee5dbacb",
+          "cidr": "10.0.4.0/24",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0545e6bf0771ae14a",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-08fdf2f67ee5dbacb",
+          "cidr": "10.0.103.0/24",
+          "az": "ap-southeast-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-04dd7a666aef09e5f",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-08fdf2f67ee5dbacb",
+          "cidr": "10.0.5.0/24",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0c56802111dd2bfbd",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0de673719ea0a90c4",
+          "cidr": "172.19.1.192/27",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-05c381511c89e75ee",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-09f19047a2484f04b",
+          "cidr": "192.168.10.0/25",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-03563e8f39e591bf1",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-08fdf2f67ee5dbacb",
+          "cidr": "10.0.6.0/24",
+          "az": "ap-southeast-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0bd9dc7ba205340b1",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-00d6afb2d2895e427",
+          "cidr": "10.119.4.0/24",
+          "az": "ap-southeast-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-042ecda37fba02b4a",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0c3abe4c5ec7695fd",
+          "cidr": "10.0.1.0/24",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-045132a6bde787efd",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0afe1e315d7953340",
+          "cidr": "10.1.200.0/24",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0ea3f1e479236e522",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-00d6afb2d2895e427",
+          "cidr": "10.119.2.0/24",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-026d4943a43d25bcd",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0afe1e315d7953340",
+          "cidr": "10.1.100.0/23",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-03ddc6a8654f0c631",
+          "region": "ap-southeast-1",
+          "vpc_id": "vpc-0de673719ea0a90c4",
+          "cidr": "172.19.28.0/24",
+          "az": "ap-southeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "NAT_Gateway": [
+        {
+          "service": "NAT_Gateway",
+          "resource_id": "nat-0f36c3c76dc212725",
+          "region": "ap-southeast-1",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "NAT_Gateway",
+          "resource_id": "nat-0e57d833d59270cef",
+          "region": "ap-southeast-1",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "SNS": [
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-southeast-1:851725183490:james-test",
+          "region": "ap-southeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-southeast-1:851725183490:ppg-notice",
+          "region": "ap-southeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "SQS": [
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.ap-southeast-1.amazonaws.com/851725183490/test",
+          "region": "ap-southeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "CloudWatch_Alarm": [
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/oc-network-tf-dynamodb-lock-poc-AlarmHigh-62dcf1a9-9d40-4bde-9abd-a36026656919",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/oc-network-tf-dynamodb-lock-poc-AlarmHigh-ffb8c86d-2dff-43b4-8a54-79657d153bed",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/oc-network-tf-dynamodb-lock-poc-ProvisionedCapacityHigh-ae3f5a88-4b10-4d75-9028-9e3e991d3e09",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/oc-network-tf-dynamodb-lock-poc-ProvisionedCapacityHigh-ba974c4c-9611-4fb6-94c3-a2437f995fed",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/oc-network-tf-dynamodb-lock-poc-ProvisionedCapacityLow-168ce8c3-3a28-466b-baf4-86dee0d49cc5",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/oc-network-tf-dynamodb-lock-poc-ProvisionedCapacityLow-546de5e6-61f4-4f32-a592-43a953f7b9eb",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/test-AlarmHigh-6a33db40-d16b-4967-a6fa-a6b2117224d7",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/test-AlarmHigh-8cc0b746-5987-4453-bf9c-0026a5adc1d7",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/test-AlarmLow-29c94d9a-5585-48a2-b0d7-667e91613057",
+          "region": "ap-southeast-1",
+          "state": "ALARM",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/test-AlarmLow-47d991ad-25e1-4e0e-944c-ae5cc7f0bbdf",
+          "region": "ap-southeast-1",
+          "state": "ALARM",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/test-ProvisionedCapacityHigh-2b357f84-4484-4629-8582-060481d8b5c9",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/test-ProvisionedCapacityHigh-97a8ed33-894f-49b4-a0b2-902124f92ab2",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/test-ProvisionedCapacityLow-bfbb560e-4ffc-4527-b623-619a306728ab",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "TargetTracking-table/test-ProvisionedCapacityLow-f6b8a88f-cc02-4aa3-a4f0-f744780d5f88",
+          "region": "ap-southeast-1",
+          "state": "OK",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "CloudWatch_Logs": [
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws-glue/crawlers",
+          "region": "ap-southeast-1",
+          "stored_bytes": 1099,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws-glue/jobs/error",
+          "region": "ap-southeast-1",
+          "stored_bytes": 18789,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws-glue/jobs/logs-v2",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws-glue/sessions/error",
+          "region": "ap-southeast-1",
+          "stored_bytes": 12876,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/amazonmq/broker/b-e4f4e639-31c0-4557-9d71-a05f36eb14ff/general",
+          "region": "ap-southeast-1",
+          "stored_bytes": 41400,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/codebuild/james-ecs-deploy",
+          "region": "ap-southeast-1",
+          "stored_bytes": 34105,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/codebuild/james-sls-deploy",
+          "region": "ap-southeast-1",
+          "stored_bytes": 68663,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/codebuild/james-sls-deploy-cross-account",
+          "region": "ap-southeast-1",
+          "stored_bytes": 87855,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/codebuild/james-test-docker",
+          "region": "ap-southeast-1",
+          "stored_bytes": 178612,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/codebuild/test-james-esf",
+          "region": "ap-southeast-1",
+          "stored_bytes": 188174,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/containerinsights/JamesEKSCluster/application",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/containerinsights/JamesEKSCluster/dataplane",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/containerinsights/JamesEKSCluster/host",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/containerinsights/JamesEKSCluster/performance",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/containerinsights/james-eks/application",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/containerinsights/james-eks/dataplane",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/containerinsights/james-eks/host",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/containerinsights/james-eks/performance",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/John_Python",
+          "region": "ap-southeast-1",
+          "stored_bytes": 10601,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-0IUX0TNrqKst",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-2uZbq3wGErne",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-6E84qiJdU6qU",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-NslLgpmIjViQ",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-TzLmDeziUbYn",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-dqqYgzHsMLJO",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-j8VwlndGXJbg",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-lNyJcK2Quc3d",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-oZOXWJhuL3y6",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-p6NtVCsKzye6",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/NetworkStack-CustomVpcRestrictDefaultSGCustomResou-rXrMqiTQzsgX",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/fs-097724dad85f07ccf-manager-lambda",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/james",
+          "region": "ap-southeast-1",
+          "stored_bytes": 21965,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/james-testasp-AspNetCoreFunction-6S4XEb1K3lix",
+          "region": "ap-southeast-1",
+          "stored_bytes": 3791,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/james-update-vpn",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/john",
+          "region": "ap-southeast-1",
+          "stored_bytes": 735,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/john-efs-EFSFileAuthentic-CognitoRoleMappingTransf-fhgtuzY4uhnW",
+          "region": "ap-southeast-1",
+          "stored_bytes": 2811,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/johnAS2-TransferSecretCustomResourceLambda-CWU8Zd6gxytM",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/johns3_sync",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/testjohnjjj-EFSFileAuthen-CognitoRoleMappingTransf-UaF3XsWPzMxf",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/testjohnjjj-EFSFileManagerAPI-1IQLE658Q-APIHandler-xLhoxvgyJDgn",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/testjohnjjj-EFSFileWebApplicat-WebsiteDeployHelper-mecrdQj3QsIx",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/rds/instance/uat-db/error",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/transfer/c-4a7636d2396847bb8",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/transfer/s-9fee8466f56c499db",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/ecs/john_flask",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/ecs/john_python",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/ecs/john_test",
+          "region": "ap-southeast-1",
+          "stored_bytes": 3040,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/ecs/project1",
+          "region": "ap-southeast-1",
+          "stored_bytes": 52391,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "RDSOSMetrics",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "dms-tasks-john-dms",
+          "region": "ap-southeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ]
+    },
+    "ap-east-1": {
+      "SQS": [
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.ap-east-1.amazonaws.com/851725183490/veeam_cloud_backup_07b5c596cd464ad38266c18e842f4966",
+          "region": "ap-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.ap-east-1.amazonaws.com/851725183490/veeam_cloud_backup_6b43b66c22f74de78d215b219b28bbe1",
+          "region": "ap-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "SNS": [
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-east-1:851725183490:veeam_cloud_backup_2ec7a54bc8404b499c8ccdc9704a2232",
+          "region": "ap-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-east-1:851725183490:veeam_cloud_backup_2edaa19230074ba79e755a0da47ff064",
+          "region": "ap-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-east-1:851725183490:veeam_cloud_backup_7de8517ec13e408bbb60824731181973",
+          "region": "ap-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-east-1:851725183490:veeam_cloud_backup_8f2c8df587844373b9f6658ed5fc1e2d",
+          "region": "ap-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-east-1:851725183490:veeam_cloud_backup_bbf280c63f6d4f8eab5e250c421672fc",
+          "region": "ap-east-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "VPC": [
+        {
+          "service": "VPC",
+          "resource_id": "vpc-04c66ed5afd866d22",
+          "region": "ap-east-1",
+          "cidr": "10.0.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0cc4ea4775f85fd4b",
+          "region": "ap-east-1",
+          "cidr": "192.168.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Subnet": [
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-02723e4a656d179df",
+          "region": "ap-east-1",
+          "vpc_id": "vpc-04c66ed5afd866d22",
+          "cidr": "10.0.16.0/20",
+          "az": "ap-east-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0420482578e66d832",
+          "region": "ap-east-1",
+          "vpc_id": "vpc-04c66ed5afd866d22",
+          "cidr": "10.0.144.0/20",
+          "az": "ap-east-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-09b75fdbdfca8ed46",
+          "region": "ap-east-1",
+          "vpc_id": "vpc-0cc4ea4775f85fd4b",
+          "cidr": "192.168.0.0/20",
+          "az": "ap-east-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0334f1da5551fa682",
+          "region": "ap-east-1",
+          "vpc_id": "vpc-04c66ed5afd866d22",
+          "cidr": "10.0.0.0/20",
+          "az": "ap-east-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-00400a249b9716f33",
+          "region": "ap-east-1",
+          "vpc_id": "vpc-0cc4ea4775f85fd4b",
+          "cidr": "192.168.128.0/20",
+          "az": "ap-east-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0b7e6b2d88a21a201",
+          "region": "ap-east-1",
+          "vpc_id": "vpc-0cc4ea4775f85fd4b",
+          "cidr": "192.168.144.0/20",
+          "az": "ap-east-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-09d08f21a510252b0",
+          "region": "ap-east-1",
+          "vpc_id": "vpc-04c66ed5afd866d22",
+          "cidr": "10.0.128.0/20",
+          "az": "ap-east-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0282ba54b12799c86",
+          "region": "ap-east-1",
+          "vpc_id": "vpc-0cc4ea4775f85fd4b",
+          "cidr": "192.168.16.0/20",
+          "az": "ap-east-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "CloudWatch_Alarm": [
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "Sam-Veeam-Test-VcbRebootAlarm-RU57J5GHJT7U",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "Towngas-poc-VcbRebootAlarm-3YJ1RIHW0KT0",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "Ubuntu-VcbRebootAlarm-19BWCL94FT8V",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "Veeam3-VcbRebootAlarm-ULEGLFC6GSTK",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "i-0e27468e154586c5c-VcbRebootAlarm-0WDE4P6922YU",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "i-0e27468e154586c5c-VcbRebootAlarm-0YXGLA3WVVWU",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "i-0e27468e154586c5c-VcbRebootAlarm-EH8FOUVZCCG6",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "i-0e27468e154586c5c-VcbRebootAlarm-IBQDOB72M92T",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "i-0e27468e154586c5c-VcbRebootAlarm-JK8G7K9ALCJ5",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "i-0e27468e154586c5c-VcbRebootAlarm-U3QGHDXN2WWY",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "i-0e27468e154586c5c-VcbRebootAlarm-XH4E29180YUZ",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "sam-veeam-2-VcbRebootAlarm-SHGZWFNWD3RA",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "sam-veeam-poc-VcbRebootAlarm-GLQVPQSGGMH0",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "veeam-public-VcbRebootAlarm-KPIQE004AZHG",
+          "region": "ap-east-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "CloudWatch_Logs": [
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "FortiGate-VPc-FlowLog",
+          "region": "ap-east-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "R53DNSLogging-forVeeamPOC-LogGroup",
+          "region": "ap-east-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "RDSOSMetrics",
+          "region": "ap-east-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "TGW-FlowLog",
+          "region": "ap-east-1",
+          "stored_bytes": 3966,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ]
+    },
+    "eu-west-1": {
+      "VPC": [
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0cd40471ab4137a07",
+          "region": "eu-west-1",
+          "cidr": "172.31.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Subnet": [
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-034a56cef03dc70dd",
+          "region": "eu-west-1",
+          "vpc_id": "vpc-0cd40471ab4137a07",
+          "cidr": "172.31.0.0/20",
+          "az": "eu-west-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0a4ecf7c9b6670d4b",
+          "region": "eu-west-1",
+          "vpc_id": "vpc-0cd40471ab4137a07",
+          "cidr": "172.31.16.0/20",
+          "az": "eu-west-1b",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0aacefb6b2a316446",
+          "region": "eu-west-1",
+          "vpc_id": "vpc-0cd40471ab4137a07",
+          "cidr": "172.31.32.0/20",
+          "az": "eu-west-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ]
+    },
+    "ap-northeast-1": {
+      "Lambda": [
+        {
+          "service": "Lambda",
+          "resource_id": "test",
+          "region": "ap-northeast-1",
+          "runtime": "provided.al2023",
+          "memory": 128,
+          "last_modified": "2025-04-29T06:47:42.000+0000",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "EBS": [
+        {
+          "service": "EBS",
+          "resource_id": "vol-0b12dc967f713b4a7",
+          "region": "ap-northeast-1",
+          "state": "in-use",
+          "size": 8,
+          "type": "gp3",
+          "hourly_cost": 0.0010666666666666667,
+          "daily_cost": 0.0256
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-0a04cfc3f9754e2f1",
+          "region": "ap-northeast-1",
+          "state": "in-use",
+          "size": 40,
+          "type": "gp3",
+          "hourly_cost": 0.005333333333333333,
+          "daily_cost": 0.128
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-046820e0e50458b5c",
+          "region": "ap-northeast-1",
+          "state": "in-use",
+          "size": 30,
+          "type": "gp3",
+          "hourly_cost": 0.004,
+          "daily_cost": 0.096
+        },
+        {
+          "service": "EBS",
+          "resource_id": "vol-0f56a6c46d0cb86fb",
+          "region": "ap-northeast-1",
+          "state": "in-use",
+          "size": 30,
+          "type": "gp3",
+          "hourly_cost": 0.004,
+          "daily_cost": 0.096
+        }
+      ],
+      "EC2": [
+        {
+          "service": "EC2",
+          "resource_id": "i-0e7806926475abfb9",
+          "region": "ap-northeast-1",
+          "state": "running",
+          "type": "r6a.large",
+          "launch_time": "2025-07-25T01:49:40+00:00",
+          "hourly_cost": 0.11200000000000002,
+          "daily_cost": 2.6880000000000006
+        },
+        {
+          "service": "EC2",
+          "resource_id": "i-06d0ad04a647536bb",
+          "region": "ap-northeast-1",
+          "state": "stopped",
+          "type": "t3.medium",
+          "launch_time": "2025-05-29T02:35:10+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "EC2",
+          "resource_id": "i-022c5ac64b966f964",
+          "region": "ap-northeast-1",
+          "state": "stopped",
+          "type": "t3.micro",
+          "launch_time": "2025-07-12T14:38:39+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "EC2",
+          "resource_id": "i-09d54fff4af8d62e9",
+          "region": "ap-northeast-1",
+          "state": "stopped",
+          "type": "t3.medium",
+          "launch_time": "2025-07-12T14:54:46+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Snapshot": [
+        {
+          "service": "Snapshot",
+          "resource_id": "snap-06b7d82d0960f3b19",
+          "region": "ap-northeast-1",
+          "state": "completed",
+          "volume_size": 100,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Snapshot",
+          "resource_id": "snap-0e444fb72fc3cb477",
+          "region": "ap-northeast-1",
+          "state": "completed",
+          "volume_size": 75,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Snapshot",
+          "resource_id": "snap-0a9e1236e129849ee",
+          "region": "ap-northeast-1",
+          "state": "completed",
+          "volume_size": 100,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "SQS": [
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.ap-northeast-1.amazonaws.com/851725183490/veeam_cloud_backup_1fbc311edb384f669976691aa697a042",
+          "region": "ap-northeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SQS",
+          "resource_id": "https://sqs.ap-northeast-1.amazonaws.com/851725183490/veeam_cloud_backup_7369effef1374592b2b7ad821d32efc0",
+          "region": "ap-northeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "VPC": [
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0eb276bb5aa4789f1",
+          "region": "ap-northeast-1",
+          "cidr": "172.27.0.0/16",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "VPC",
+          "resource_id": "vpc-0e03c482940ff9616",
+          "region": "ap-northeast-1",
+          "cidr": "10.1.0.0/24",
+          "state": "available",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Subnet": [
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0edc335cd33eb7c8f",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0eb276bb5aa4789f1",
+          "cidr": "172.27.13.0/24",
+          "az": "ap-northeast-1d",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-00be1ff02ab61acb8",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0eb276bb5aa4789f1",
+          "cidr": "172.27.12.0/24",
+          "az": "ap-northeast-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0d26e1b98fd01907f",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0eb276bb5aa4789f1",
+          "cidr": "172.27.1.0/24",
+          "az": "ap-northeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0c722ba8d0a1a0506",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0eb276bb5aa4789f1",
+          "cidr": "172.27.14.0/24",
+          "az": "ap-northeast-1-tpe-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-024ffbef0bfc434c9",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0eb276bb5aa4789f1",
+          "cidr": "172.27.2.0/24",
+          "az": "ap-northeast-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0c95872fb837ef873",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0eb276bb5aa4789f1",
+          "cidr": "172.27.3.0/24",
+          "az": "ap-northeast-1d",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-060a0e4d73b669a03",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0e03c482940ff9616",
+          "cidr": "10.1.0.128/28",
+          "az": "ap-northeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-0e2f621265d015f9c",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0e03c482940ff9616",
+          "cidr": "10.1.0.144/28",
+          "az": "ap-northeast-1c",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-01a98583e5f7b970a",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0eb276bb5aa4789f1",
+          "cidr": "172.27.11.0/24",
+          "az": "ap-northeast-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Subnet",
+          "resource_id": "subnet-04e2af87cc4f872aa",
+          "region": "ap-northeast-1",
+          "vpc_id": "vpc-0eb276bb5aa4789f1",
+          "cidr": "172.27.4.0/24",
+          "az": "ap-northeast-1-tpe-1a",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "SNS": [
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-northeast-1:851725183490:LaunchWizardEventForwarder-DO_NOT_MODIFY",
+          "region": "ap-northeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-northeast-1:851725183490:veeam_cloud_backup_9c133f97ffb748cf83eb4ebd98499b9b",
+          "region": "ap-northeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "SNS",
+          "resource_id": "arn:aws:sns:ap-northeast-1:851725183490:veeam_cloud_backup_ab1b131d07af4d32a825996333c91e11",
+          "region": "ap-northeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "CloudWatch_Alarm": [
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "Sam-Veeam-VcbRebootAlarm-AZQG86AFFE71",
+          "region": "ap-northeast-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "Sam-Veeam-VcbRebootAlarm-MH25CV9L0H3U",
+          "region": "ap-northeast-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "Sam-VeeamAWS-VcbRebootAlarm-N0USFUMVFLNL",
+          "region": "ap-northeast-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Alarm",
+          "resource_id": "veeam-VcbRebootAlarm-LWY40KQVQPLB",
+          "region": "ap-northeast-1",
+          "state": "INSUFFICIENT_DATA",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "CloudWatch_Logs": [
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/aws/lambda/test",
+          "region": "ap-northeast-1",
+          "stored_bytes": 5393,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/ecs/busybox",
+          "region": "ap-northeast-1",
+          "stored_bytes": 0,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudWatch_Logs",
+          "resource_id": "/ecs/nginxdemos-hello",
+          "region": "ap-northeast-1",
+          "stored_bytes": 20408862,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ]
+    },
+    "global": {
+      "S3": [
+        {
+          "service": "S3",
+          "resource_id": "aws-cloudtrail-logs-851725183490-0cf00e4b-20240624",
+          "region": "global",
+          "creation_date": "2024-07-24T04:53:19+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "S3",
+          "resource_id": "cdk-hnb659fds-assets-851725183490-ap-southeast-1",
+          "region": "global",
+          "creation_date": "2025-06-10T02:48:00+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "S3",
+          "resource_id": "ecv-gcr",
+          "region": "global",
+          "creation_date": "2024-03-25T03:51:02+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "S3",
+          "resource_id": "james-ecv-bucket",
+          "region": "global",
+          "creation_date": "2024-11-09T22:58:18+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "S3",
+          "resource_id": "johnbuckets",
+          "region": "global",
+          "creation_date": "2025-04-30T04:27:14+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "S3",
+          "resource_id": "luckybucketecv",
+          "region": "global",
+          "creation_date": "2025-07-24T05:56:51+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "S3",
+          "resource_id": "sam-veeam-test-0721",
+          "region": "global",
+          "creation_date": "2025-07-21T08:28:23+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "CloudFront": [
+        {
+          "service": "CloudFront",
+          "resource_id": "E2NUM4EQWQOEA",
+          "region": "global",
+          "domain": "d1jua6eglmhoas.cloudfront.net",
+          "status": "Deployed",
+          "enabled": true,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudFront",
+          "resource_id": "E2XGHKC13UF3TC",
+          "region": "global",
+          "domain": "dzb7ccd2ioou4.cloudfront.net",
+          "status": "Deployed",
+          "enabled": false,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudFront",
+          "resource_id": "ES736JZJ7Y0BW",
+          "region": "global",
+          "domain": "d2bqparveer73t.cloudfront.net",
+          "status": "Deployed",
+          "enabled": false,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudFront",
+          "resource_id": "E1K81UEMA085J3",
+          "region": "global",
+          "domain": "d73xb9idtifiw.cloudfront.net",
+          "status": "Deployed",
+          "enabled": false,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "CloudFront",
+          "resource_id": "E131182HIRS7GM",
+          "region": "global",
+          "domain": "d3myiwbj1ufrry.cloudfront.net",
+          "status": "Deployed",
+          "enabled": false,
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "Route53": [
+        {
+          "service": "Route53",
+          "resource_id": "/hostedzone/Z05288341WULD55DB321N",
+          "region": "global",
+          "name": "ecloudvalleypoc.com.",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Route53",
+          "resource_id": "/hostedzone/Z02522103VQPRT7HY4CG9",
+          "region": "global",
+          "name": "example.com.",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "Route53",
+          "resource_id": "/hostedzone/Z055011836OJKPII1GJZJ",
+          "region": "global",
+          "name": "kentcloud.com.tw.",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "IAM_User": [
+        {
+          "service": "IAM_User",
+          "resource_id": "james.lee@ecloudvalley.com",
+          "region": "global",
+          "create_date": "2024-05-27T06:06:36+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_User",
+          "resource_id": "john.tan@ecloudvalley.com",
+          "region": "global",
+          "create_date": "2024-08-20T03:18:30+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_User",
+          "resource_id": "lucky.yuan@ecloudvalley.com",
+          "region": "global",
+          "create_date": "2025-07-24T05:52:01+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_User",
+          "resource_id": "Sam-Veeam-Restore",
+          "region": "global",
+          "create_date": "2025-07-22T04:02:20+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_User",
+          "resource_id": "sam-veeam-s3Permission",
+          "region": "global",
+          "create_date": "2025-07-21T08:24:33+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_User",
+          "resource_id": "sam@ecloudvalley.com",
+          "region": "global",
+          "create_date": "2024-07-31T03:14:14+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "IAM_Role": [
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSReservedSSO_AdministratorAccess_7f5c5e1ad8c549fd",
+          "region": "global",
+          "create_date": "2024-02-17T08:53:10+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonEKS",
+          "region": "global",
+          "create_date": "2024-04-11T02:51:50+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonEKSNodegroup",
+          "region": "global",
+          "create_date": "2024-04-11T02:59:27+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonElasticFileSystem",
+          "region": "global",
+          "create_date": "2024-04-11T05:23:53+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonFSx",
+          "region": "global",
+          "create_date": "2024-11-21T11:20:25+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonGuardDuty",
+          "region": "global",
+          "create_date": "2024-05-17T09:49:36+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonGuardDutyMalwareProtection",
+          "region": "global",
+          "create_date": "2024-05-17T09:49:41+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonInspector2",
+          "region": "global",
+          "create_date": "2024-09-23T02:30:41+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonInspector2Agentless",
+          "region": "global",
+          "create_date": "2024-09-23T02:30:42+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonQApps",
+          "region": "global",
+          "create_date": "2025-07-23T06:37:25+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonQDeveloper",
+          "region": "global",
+          "create_date": "2025-06-30T02:41:12+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAmazonSSM",
+          "region": "global",
+          "create_date": "2024-03-22T03:57:40+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAPIGateway",
+          "region": "global",
+          "create_date": "2024-06-14T02:44:40+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForApplicationAutoScaling_DynamoDBTable",
+          "region": "global",
+          "create_date": "2024-04-09T13:56:11+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForApplicationAutoScaling_ECSService",
+          "region": "global",
+          "create_date": "2025-06-23T08:55:37+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForApplicationInsights",
+          "region": "global",
+          "create_date": "2024-06-14T02:44:20+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForApplicationMigrationService",
+          "region": "global",
+          "create_date": "2024-02-21T08:33:09+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAutoScaling",
+          "region": "global",
+          "create_date": "2024-04-11T02:59:46+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForAWSServiceCatalogAppRegistry",
+          "region": "global",
+          "create_date": "2024-06-14T02:44:06+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForBackup",
+          "region": "global",
+          "create_date": "2024-04-11T05:24:05+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForClientVPN",
+          "region": "global",
+          "create_date": "2025-06-03T07:26:58+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForClientVPNConnections",
+          "region": "global",
+          "create_date": "2025-06-03T07:26:59+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForCloudWatchApplicationSignals",
+          "region": "global",
+          "create_date": "2024-07-23T03:24:33+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForCloudWatchEvents",
+          "region": "global",
+          "create_date": "2024-08-02T08:01:04+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForConfig",
+          "region": "global",
+          "create_date": "2024-06-17T02:53:41+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForEc2InstanceConnect",
+          "region": "global",
+          "create_date": "2024-03-04T02:08:13+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForEC2Spot",
+          "region": "global",
+          "create_date": "2024-04-11T03:00:37+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForECS",
+          "region": "global",
+          "create_date": "2024-05-16T07:18:51+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForElastiCache",
+          "region": "global",
+          "create_date": "2025-01-22T03:14:51+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForElasticDisasterRecovery",
+          "region": "global",
+          "create_date": "2024-05-17T08:46:58+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForElasticLoadBalancing",
+          "region": "global",
+          "create_date": "2024-04-10T06:51:11+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForGlobalAccelerator",
+          "region": "global",
+          "create_date": "2024-05-23T05:53:10+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForIPAM",
+          "region": "global",
+          "create_date": "2025-04-13T12:33:34+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForKeyManagementServiceMultiRegionKeys",
+          "region": "global",
+          "create_date": "2025-03-19T03:07:36+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForNetworkFirewall",
+          "region": "global",
+          "create_date": "2024-05-09T05:13:00+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForOrganizations",
+          "region": "global",
+          "create_date": "2024-02-15T06:14:43+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForQBusiness",
+          "region": "global",
+          "create_date": "2025-07-23T06:37:25+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForRDS",
+          "region": "global",
+          "create_date": "2024-03-17T11:28:24+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForResourceExplorer",
+          "region": "global",
+          "create_date": "2025-06-12T05:53:26+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForRoute53Resolver",
+          "region": "global",
+          "create_date": "2024-11-13T04:36:06+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForSecurityHub",
+          "region": "global",
+          "create_date": "2024-05-17T09:50:45+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForServiceQuotas",
+          "region": "global",
+          "create_date": "2024-08-20T03:43:45+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForSSMQuickSetup",
+          "region": "global",
+          "create_date": "2024-08-07T05:39:14+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForSSO",
+          "region": "global",
+          "create_date": "2024-02-15T06:14:54+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForSupport",
+          "region": "global",
+          "create_date": "2024-02-15T06:14:42+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForTrustedAdvisor",
+          "region": "global",
+          "create_date": "2024-02-15T06:14:42+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForUserSubscriptions",
+          "region": "global",
+          "create_date": "2025-06-30T02:41:23+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "AWSServiceRoleForVPCTransitGateway",
+          "region": "global",
+          "create_date": "2024-04-22T08:22:20+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "codebuild-John_CodeDeploy-service-role",
+          "region": "global",
+          "create_date": "2025-07-24T09:49:53+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "JamesSSMRole",
+          "region": "global",
+          "create_date": "2025-07-25T01:56:54+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "John-SSMRole",
+          "region": "global",
+          "create_date": "2025-07-25T01:52:38+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Role",
+          "resource_id": "test",
+          "region": "global",
+          "create_date": "2025-07-24T06:09:33+00:00",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ],
+      "IAM_Policy": [
+        {
+          "service": "IAM_Policy",
+          "resource_id": "CodeBuildBasePolicy-John_CodeDeploy-ap-southeast-1",
+          "region": "global",
+          "arn": "arn:aws:iam::851725183490:policy/service-role/CodeBuildBasePolicy-John_CodeDeploy-ap-southeast-1",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        },
+        {
+          "service": "IAM_Policy",
+          "resource_id": "CodeBuildCodeConnectionsSourceCredentialsPolicy-John_CodeDeploy-ap-southeast-1-851725183490",
+          "region": "global",
+          "arn": "arn:aws:iam::851725183490:policy/service-role/CodeBuildCodeConnectionsSourceCredentialsPolicy-John_CodeDeploy-ap-southeast-1-851725183490",
+          "hourly_cost": 0.0,
+          "daily_cost": 0.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "total_resources": 403,
+    "total_daily_cost": 5.26416,
+    "scan_time": "2025-07-25T14:11:04.437127"
+  }
+}

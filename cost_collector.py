@@ -178,6 +178,44 @@ class CostCollector:
             print(f"扫描Lambda失败 ({region}): {e}")
         return services
     
+    def get_all_resources(self):
+        """扫描所有AWS资源，不管是否在使用"""
+        all_resources = []
+        
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = []
+            
+            # 扫描所有区域的所有资源
+            for region in self.regions:
+                futures.append(executor.submit(self.scan_all_ec2_resources, region))
+                futures.append(executor.submit(self.scan_all_rds_resources, region))
+                futures.append(executor.submit(self.scan_all_lambda_resources, region))
+                futures.append(executor.submit(self.scan_all_ebs_resources, region))
+                futures.append(executor.submit(self.scan_all_vpc_resources, region))
+                futures.append(executor.submit(self.scan_all_ecs_resources, region))
+                futures.append(executor.submit(self.scan_all_eks_resources, region))
+                futures.append(executor.submit(self.scan_all_dynamodb_resources, region))
+                futures.append(executor.submit(self.scan_all_sns_resources, region))
+                futures.append(executor.submit(self.scan_all_sqs_resources, region))
+                futures.append(executor.submit(self.scan_all_cloudwatch_resources, region))
+                futures.append(executor.submit(self.scan_all_elb_resources, region))
+            
+            # 全局服务
+            futures.append(executor.submit(self.scan_all_s3_resources))
+            futures.append(executor.submit(self.scan_all_iam_resources))
+            futures.append(executor.submit(self.scan_all_cloudfront_resources))
+            futures.append(executor.submit(self.scan_all_route53_resources))
+            
+            # 收集结果
+            for future in as_completed(futures):
+                try:
+                    resources = future.result()
+                    all_resources.extend(resources)
+                except Exception as e:
+                    print(f"扫描任务失败: {e}")
+        
+        return all_resources
+    
     def get_running_services(self):
         """使用多线程获取所有运行中的服务"""
         all_services = []
@@ -1135,6 +1173,426 @@ class CostCollector:
         
         if old_summary:
             print(f"✓ 汇总更新: 每小时 ${old_summary[0]:.4f} → ${total_hourly:.4f}, 每日 ${old_summary[1]:.2f} → ${total_daily:.2f}")
+    
+    def scan_all_ec2_resources(self, region):
+        """扫描所有EC2资源"""
+        resources = []
+        try:
+            ec2 = self.session.client('ec2', region_name=region)
+            
+            # 所有实例（不管状态）
+            instances = ec2.describe_instances()
+            for reservation in instances['Reservations']:
+                for instance in reservation['Instances']:
+                    resources.append({
+                        'service': 'EC2',
+                        'resource_id': instance['InstanceId'],
+                        'region': region,
+                        'state': instance['State']['Name'],
+                        'type': instance['InstanceType'],
+                        'launch_time': instance.get('LaunchTime', '').isoformat() if instance.get('LaunchTime') else None
+                    })
+            
+            # 所有AMI
+            images = ec2.describe_images(Owners=['self'])
+            for img in images['Images']:
+                resources.append({
+                    'service': 'AMI',
+                    'resource_id': img['ImageId'],
+                    'region': region,
+                    'name': img.get('Name', ''),
+                    'state': img['State']
+                })
+            
+            # 所有快照
+            snapshots = ec2.describe_snapshots(OwnerIds=['self'])
+            for snap in snapshots['Snapshots']:
+                resources.append({
+                    'service': 'Snapshot',
+                    'resource_id': snap['SnapshotId'],
+                    'region': region,
+                    'state': snap['State'],
+                    'volume_size': snap['VolumeSize']
+                })
+                
+        except Exception as e:
+            print(f"扫描EC2资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_rds_resources(self, region):
+        """扫描所有RDS资源"""
+        resources = []
+        try:
+            rds = self.session.client('rds', region_name=region)
+            
+            # 所有数据库实例
+            instances = rds.describe_db_instances()
+            for db in instances['DBInstances']:
+                resources.append({
+                    'service': 'RDS',
+                    'resource_id': db['DBInstanceIdentifier'],
+                    'region': region,
+                    'engine': db['Engine'],
+                    'status': db['DBInstanceStatus'],
+                    'class': db['DBInstanceClass']
+                })
+            
+            # 所有集群
+            try:
+                clusters = rds.describe_db_clusters()
+                for cluster in clusters['DBClusters']:
+                    resources.append({
+                        'service': 'RDS_Cluster',
+                        'resource_id': cluster['DBClusterIdentifier'],
+                        'region': region,
+                        'engine': cluster['Engine'],
+                        'status': cluster['Status']
+                    })
+            except:
+                pass
+                
+        except Exception as e:
+            print(f"扫描RDS资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_lambda_resources(self, region):
+        """扫描所有Lambda资源"""
+        resources = []
+        try:
+            lambda_client = self.session.client('lambda', region_name=region)
+            functions = lambda_client.list_functions()
+            
+            for func in functions['Functions']:
+                resources.append({
+                    'service': 'Lambda',
+                    'resource_id': func['FunctionName'],
+                    'region': region,
+                    'runtime': func['Runtime'],
+                    'memory': func['MemorySize'],
+                    'last_modified': func['LastModified']
+                })
+                
+        except Exception as e:
+            print(f"扫描Lambda资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_ebs_resources(self, region):
+        """扫描所有EBS资源"""
+        resources = []
+        try:
+            ec2 = self.session.client('ec2', region_name=region)
+            volumes = ec2.describe_volumes()
+            
+            for volume in volumes['Volumes']:
+                resources.append({
+                    'service': 'EBS',
+                    'resource_id': volume['VolumeId'],
+                    'region': region,
+                    'state': volume['State'],
+                    'size': volume['Size'],
+                    'type': volume['VolumeType']
+                })
+                
+        except Exception as e:
+            print(f"扫描EBS资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_vpc_resources(self, region):
+        """扫描所有VPC资源"""
+        resources = []
+        try:
+            ec2 = self.session.client('ec2', region_name=region)
+            
+            # VPC
+            vpcs = ec2.describe_vpcs()
+            for vpc in vpcs['Vpcs']:
+                resources.append({
+                    'service': 'VPC',
+                    'resource_id': vpc['VpcId'],
+                    'region': region,
+                    'cidr': vpc['CidrBlock'],
+                    'state': vpc['State']
+                })
+            
+            # 子网
+            subnets = ec2.describe_subnets()
+            for subnet in subnets['Subnets']:
+                resources.append({
+                    'service': 'Subnet',
+                    'resource_id': subnet['SubnetId'],
+                    'region': region,
+                    'vpc_id': subnet['VpcId'],
+                    'cidr': subnet['CidrBlock'],
+                    'az': subnet['AvailabilityZone']
+                })
+            
+            # NAT网关
+            nat_gateways = ec2.describe_nat_gateways()
+            for nat in nat_gateways['NatGateways']:
+                resources.append({
+                    'service': 'NAT_Gateway',
+                    'resource_id': nat['NatGatewayId'],
+                    'region': region,
+                    'state': nat['State']
+                })
+                
+        except Exception as e:
+            print(f"扫描VPC资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_ecs_resources(self, region):
+        """扫描所有ECS资源"""
+        resources = []
+        try:
+            ecs = self.session.client('ecs', region_name=region)
+            
+            # 集群
+            clusters = ecs.list_clusters()
+            for cluster in clusters['clusterArns']:
+                resources.append({
+                    'service': 'ECS_Cluster',
+                    'resource_id': cluster.split('/')[-1],
+                    'region': region,
+                    'arn': cluster
+                })
+            
+            # 服务
+            services = ecs.list_services()
+            for service in services['serviceArns']:
+                resources.append({
+                    'service': 'ECS_Service',
+                    'resource_id': service.split('/')[-1],
+                    'region': region,
+                    'arn': service
+                })
+                
+        except Exception as e:
+            print(f"扫描ECS资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_eks_resources(self, region):
+        """扫描所有EKS资源"""
+        resources = []
+        try:
+            eks = self.session.client('eks', region_name=region)
+            clusters = eks.list_clusters()
+            
+            for cluster in clusters['clusters']:
+                resources.append({
+                    'service': 'EKS',
+                    'resource_id': cluster,
+                    'region': region
+                })
+                
+        except Exception as e:
+            print(f"扫描EKS资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_dynamodb_resources(self, region):
+        """扫描所有DynamoDB资源"""
+        resources = []
+        try:
+            dynamodb = self.session.client('dynamodb', region_name=region)
+            tables = dynamodb.list_tables()
+            
+            for table in tables['TableNames']:
+                resources.append({
+                    'service': 'DynamoDB',
+                    'resource_id': table,
+                    'region': region
+                })
+                
+        except Exception as e:
+            print(f"扫描DynamoDB资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_sns_resources(self, region):
+        """扫描所有SNS资源"""
+        resources = []
+        try:
+            sns = self.session.client('sns', region_name=region)
+            topics = sns.list_topics()
+            
+            for topic in topics['Topics']:
+                resources.append({
+                    'service': 'SNS',
+                    'resource_id': topic['TopicArn'],
+                    'region': region
+                })
+                
+        except Exception as e:
+            print(f"扫描SNS资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_sqs_resources(self, region):
+        """扫描所有SQS资源"""
+        resources = []
+        try:
+            sqs = self.session.client('sqs', region_name=region)
+            queues = sqs.list_queues()
+            
+            for queue in queues.get('QueueUrls', []):
+                resources.append({
+                    'service': 'SQS',
+                    'resource_id': queue,
+                    'region': region
+                })
+                
+        except Exception as e:
+            print(f"扫描SQS资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_cloudwatch_resources(self, region):
+        """扫描所有CloudWatch资源"""
+        resources = []
+        try:
+            cloudwatch = self.session.client('cloudwatch', region_name=region)
+            logs = self.session.client('logs', region_name=region)
+            
+            # 告警
+            alarms = cloudwatch.describe_alarms()
+            for alarm in alarms['MetricAlarms']:
+                resources.append({
+                    'service': 'CloudWatch_Alarm',
+                    'resource_id': alarm['AlarmName'],
+                    'region': region,
+                    'state': alarm['StateValue']
+                })
+            
+            # 日志组
+            log_groups = logs.describe_log_groups()
+            for log_group in log_groups['logGroups']:
+                resources.append({
+                    'service': 'CloudWatch_Logs',
+                    'resource_id': log_group['logGroupName'],
+                    'region': region,
+                    'stored_bytes': log_group.get('storedBytes', 0)
+                })
+                
+        except Exception as e:
+            print(f"扫描CloudWatch资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_elb_resources(self, region):
+        """扫描所有负载均衡器资源"""
+        resources = []
+        try:
+            elb = self.session.client('elbv2', region_name=region)
+            load_balancers = elb.describe_load_balancers()
+            
+            for lb in load_balancers['LoadBalancers']:
+                resources.append({
+                    'service': 'LoadBalancer',
+                    'resource_id': lb['LoadBalancerName'],
+                    'region': region,
+                    'arn': lb['LoadBalancerArn'],
+                    'state': lb['State']['Code'],
+                    'type': lb['Type']
+                })
+                
+        except Exception as e:
+            print(f"扫描负载均衡器资源失败 ({region}): {e}")
+        return resources
+    
+    def scan_all_s3_resources(self):
+        """扫描所有S3资源"""
+        resources = []
+        try:
+            s3 = self.session.client('s3')
+            buckets = s3.list_buckets()
+            
+            for bucket in buckets['Buckets']:
+                resources.append({
+                    'service': 'S3',
+                    'resource_id': bucket['Name'],
+                    'region': 'global',
+                    'creation_date': bucket['CreationDate'].isoformat()
+                })
+                
+        except Exception as e:
+            print(f"扫描S3资源失败: {e}")
+        return resources
+    
+    def scan_all_iam_resources(self):
+        """扫描所有IAM资源"""
+        resources = []
+        try:
+            iam = self.session.client('iam')
+            
+            # 用户
+            users = iam.list_users()
+            for user in users['Users']:
+                resources.append({
+                    'service': 'IAM_User',
+                    'resource_id': user['UserName'],
+                    'region': 'global',
+                    'create_date': user['CreateDate'].isoformat()
+                })
+            
+            # 角色
+            roles = iam.list_roles()
+            for role in roles['Roles']:
+                resources.append({
+                    'service': 'IAM_Role',
+                    'resource_id': role['RoleName'],
+                    'region': 'global',
+                    'create_date': role['CreateDate'].isoformat()
+                })
+            
+            # 策略
+            policies = iam.list_policies(Scope='Local')
+            for policy in policies['Policies']:
+                resources.append({
+                    'service': 'IAM_Policy',
+                    'resource_id': policy['PolicyName'],
+                    'region': 'global',
+                    'arn': policy['Arn']
+                })
+                
+        except Exception as e:
+            print(f"扫描IAM资源失败: {e}")
+        return resources
+    
+    def scan_all_cloudfront_resources(self):
+        """扫描所有CloudFront资源"""
+        resources = []
+        try:
+            cf = self.session.client('cloudfront', region_name='us-east-1')
+            distributions = cf.list_distributions()
+            
+            if 'Items' in distributions['DistributionList']:
+                for dist in distributions['DistributionList']['Items']:
+                    resources.append({
+                        'service': 'CloudFront',
+                        'resource_id': dist['Id'],
+                        'region': 'global',
+                        'domain': dist['DomainName'],
+                        'status': dist['Status'],
+                        'enabled': dist['Enabled']
+                    })
+                    
+        except Exception as e:
+            print(f"扫描CloudFront资源失败: {e}")
+        return resources
+    
+    def scan_all_route53_resources(self):
+        """扫描所有Route53资源"""
+        resources = []
+        try:
+            route53 = self.session.client('route53', region_name='us-east-1')
+            zones = route53.list_hosted_zones()
+            
+            for zone in zones['HostedZones']:
+                resources.append({
+                    'service': 'Route53',
+                    'resource_id': zone['Id'],
+                    'region': 'global',
+                    'name': zone['Name']
+                })
+                
+        except Exception as e:
+            print(f"扫描Route53资源失败: {e}")
+        return resources
     
     def start_scheduler(self):
         """启动定时任务"""
