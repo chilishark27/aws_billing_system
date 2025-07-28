@@ -19,6 +19,8 @@ services:
       - DB_PASSWORD=${DB_PASSWORD:-}
       - DB_NAME=${DB_NAME:-aws_cost_monitor}
       - DB_PATH=${DB_PATH:-/app/data/cost_history.db}
+      - LOG_PATH=${LOG_PATH:-}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
     restart: unless-stopped
     labels:
       - "com.aws-cost-monitor.description=AWS成本监控系统"

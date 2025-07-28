@@ -152,6 +152,8 @@ export DB_NAME=aws_cost_monitor
 |--------|--------|------|
 | `AWS_DEFAULT_REGION` | `us-east-1` | 默认AWS区域 |
 | `DB_TYPE` | `sqlite` | 数据库类型 |
+| `LOG_PATH` | - | 日志文件路径 (可选) |
+| `LOG_LEVEL` | `INFO` | 日志级别 |
 | `PYTHONUNBUFFERED` | `1` | Python无缓冲输出 |
 
 ### 监控区域调整

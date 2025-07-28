@@ -13,6 +13,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pricing.price_manager import PriceManager
 from database.db_manager import DatabaseManager
 from utils.db_config import get_db_config
+from utils.logger import setup_logger, get_log_config
 from collectors.ec2_collector import EC2Collector
 from collectors.vpc_collector import VPCCollector
 from collectors.rds_collector import RDSCollector
@@ -22,6 +23,10 @@ class CostCollectorV2:
     def __init__(self):
         self.session = boto3.Session()
         self.price_manager = PriceManager()
+        # 设置日志
+        log_config = get_log_config()
+        self.logger = setup_logger('aws_cost_collector', log_config['path'], log_config['level'])
+        
         self.db_manager = DatabaseManager(get_db_config())
         
         # 初始化各种收集器
@@ -53,7 +58,7 @@ class CostCollectorV2:
     
     def collect_and_save(self):
         """收集并保存成本数据"""
-        print(f"[{datetime.now()}] 开始收集成本数据...")
+        self.logger.info("开始收集成本数据...")
         
         # 检查月度重置
         self.db_manager.check_monthly_reset()
@@ -67,14 +72,14 @@ class CostCollectorV2:
         # 保存到数据库
         total_hourly, total_daily, service_breakdown = self.db_manager.save_cost_data(services)
         
-        print(f"收集完成: {len(services)}个服务, 每小时${total_hourly:.2f}, 每日${total_daily:.2f}")
+        self.logger.info(f"收集完成: {len(services)}个服务, 每小时${total_hourly:.2f}, 每日${total_daily:.2f}")
         
         # 更新月度统计
         self.db_manager.update_monthly_summary(total_daily, service_breakdown)
     
     def start_scheduler(self):
         """启动定时任务"""
-        print("AWS成本监控器V2启动...")
+        self.logger.info("AWS成本监控器V2启动...")
         
         # 立即执行一次
         self.collect_and_save()
@@ -82,7 +87,7 @@ class CostCollectorV2:
         # 每小时执行
         schedule.every().hour.do(self.collect_and_save)
         
-        print("定时任务已设置 (每小时执行)")
+        self.logger.info("定时任务已设置 (每小时执行)")
         
         while True:
             schedule.run_pending()

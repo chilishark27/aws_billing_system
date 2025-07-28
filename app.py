@@ -11,12 +11,18 @@ from datetime import datetime
 
 from database.db_manager import DatabaseManager
 from utils.db_config import get_db_config
+from utils.logger import setup_logger, get_log_config
 from cost_collector import CostCollectorV2
 import sqlite3
 import json
+import logging
 
 app = Flask(__name__)
 CORS(app)
+
+# 设置日志
+log_config = get_log_config()
+logger = setup_logger('aws_cost_monitor_web', log_config['path'], log_config['level'])
 
 # 全局组件
 db_manager = DatabaseManager(get_db_config())
@@ -138,63 +144,130 @@ def scan_status_api():
 @app.route('/api/service_data/<service_type>')
 def service_data(service_type):
     """获取特定服务的数据"""
-    import sqlite3
-    import json
-    
-    conn = sqlite3.connect('data/cost_history.db')
-    conn.row_factory = sqlite3.Row
-    
-    latest_timestamp = conn.execute('''
-        SELECT timestamp FROM cost_summary 
-        ORDER BY timestamp DESC LIMIT 1
-    ''').fetchone()
-    
-    if not latest_timestamp:
+    try:
+        conn = db_manager.get_connection()
+        
+        if db_manager.db_type == 'sqlite':
+            conn.row_factory = sqlite3.Row
+        
+        cursor = conn.cursor()
+        
+        # 获取最新时间戳
+        cursor.execute('''
+            SELECT timestamp FROM cost_summary 
+            ORDER BY timestamp DESC LIMIT 1
+        ''')
+        latest_timestamp = cursor.fetchone()
+        
+        if not latest_timestamp:
+            conn.close()
+            return jsonify([])
+        
+        timestamp = latest_timestamp[0] if db_manager.db_type != 'sqlite' else latest_timestamp['timestamp']
+        placeholder = '?' if db_manager.db_type == 'sqlite' else '%s'
+        
+        if service_type.upper() == 'LAMBDA':
+            cursor.execute(f'''
+                SELECT * FROM lambda_records 
+                WHERE timestamp = {placeholder}
+                ORDER BY daily_cost DESC
+            ''', (timestamp,))
+        else:
+            cursor.execute(f'''
+                SELECT * FROM cost_records 
+                WHERE timestamp = {placeholder} AND service_type = {placeholder}
+                ORDER BY daily_cost DESC
+            ''', (timestamp, service_type.upper()))
+        
+        resources = cursor.fetchall()
         conn.close()
-        return jsonify([])
-    
-    if service_type.upper() == 'LAMBDA':
-        resources = conn.execute('''
-            SELECT *, 'LAMBDA' as service_type FROM lambda_records 
-            WHERE timestamp = ?
-            ORDER BY daily_cost DESC
-        ''', (latest_timestamp['timestamp'],)).fetchall()
-    else:
-        resources = conn.execute('''
-            SELECT * FROM cost_records 
-            WHERE timestamp = ? AND service_type = ?
-            ORDER BY daily_cost DESC
-        ''', (latest_timestamp['timestamp'], service_type.upper())).fetchall()
-    
-    conn.close()
-    return jsonify([dict(row) for row in resources])
+        
+        if db_manager.db_type == 'sqlite':
+            result = [dict(row) for row in resources]
+            if service_type.upper() == 'LAMBDA':
+                for item in result:
+                    item['service_type'] = 'LAMBDA'
+            return jsonify(result)
+        else:
+            if service_type.upper() == 'LAMBDA':
+                columns = ['id', 'timestamp', 'resource_id', 'region', 'hourly_cost', 'daily_cost', 'details']
+                result = []
+                for row in resources:
+                    resource_dict = dict(zip(columns, row))
+                    resource_dict['service_type'] = 'LAMBDA'
+                    result.append(resource_dict)
+                return jsonify(result)
+            else:
+                columns = ['id', 'timestamp', 'service_type', 'resource_id', 'region', 'hourly_cost', 'daily_cost', 'details']
+                return jsonify([dict(zip(columns, row)) for row in resources])
+            
+    except Exception as e:
+        logger.error(f"获取服务数据失败: {e}")
+        return jsonify({'error': '获取服务数据失败'}), 500
 
 @app.route('/api/resource_details')
 def resource_details():
     """获取资源详细信息"""
-    import sqlite3
-    
-    conn = sqlite3.connect('data/cost_history.db')
-    conn.row_factory = sqlite3.Row
-    
-    latest_timestamp = conn.execute('''
-        SELECT timestamp FROM cost_summary 
-        ORDER BY timestamp DESC LIMIT 1
-    ''').fetchone()
-    
-    if not latest_timestamp:
+    try:
+        conn = db_manager.get_connection()
+        
+        if db_manager.db_type == 'sqlite':
+            conn.row_factory = sqlite3.Row
+        
+        cursor = conn.cursor()
+        
+        # 获取最新时间戳
+        cursor.execute('''
+            SELECT timestamp FROM cost_summary 
+            ORDER BY timestamp DESC LIMIT 1
+        ''')
+        latest_timestamp = cursor.fetchone()
+        
+        if not latest_timestamp:
+            conn.close()
+            return jsonify([])
+        
+        timestamp = latest_timestamp[0] if db_manager.db_type != 'sqlite' else latest_timestamp['timestamp']
+        
+        # 获取资源详情
+        placeholder = '?' if db_manager.db_type == 'sqlite' else '%s'
+        
+        if db_manager.db_type == 'sqlite':
+            cursor.execute(f'''
+                SELECT *, json_extract(details, '$.instance_type') as instance_type
+                FROM cost_records 
+                WHERE timestamp = {placeholder}
+                ORDER BY service_type, daily_cost DESC
+            ''', (timestamp,))
+        else:
+            cursor.execute(f'''
+                SELECT * FROM cost_records 
+                WHERE timestamp = {placeholder}
+                ORDER BY service_type, daily_cost DESC
+            ''', (timestamp,))
+        
+        resources = cursor.fetchall()
         conn.close()
-        return jsonify([])
-    
-    resources = conn.execute('''
-        SELECT *, json_extract(details, '$.instance_type') as instance_type
-        FROM cost_records 
-        WHERE timestamp = ?
-        ORDER BY service_type, daily_cost DESC
-    ''', (latest_timestamp['timestamp'],)).fetchall()
-    
-    conn.close()
-    return jsonify([dict(row) for row in resources])
+        
+        if db_manager.db_type == 'sqlite':
+            return jsonify([dict(row) for row in resources])
+        else:
+            columns = ['id', 'timestamp', 'service_type', 'resource_id', 'region', 'hourly_cost', 'daily_cost', 'details']
+            result = []
+            for row in resources:
+                resource_dict = dict(zip(columns, row))
+                # 解析details中的instance_type
+                try:
+                    details = json.loads(resource_dict['details'])
+                    resource_dict['instance_type'] = details.get('instance_type', '')
+                except:
+                    resource_dict['instance_type'] = ''
+                result.append(resource_dict)
+            return jsonify(result)
+            
+    except Exception as e:
+        logger.error(f"获取资源详情失败: {e}")
+        return jsonify({'error': '获取资源详情失败'}), 500
 
 @app.route('/api/monthly_summary')
 def monthly_summary():
