@@ -70,7 +70,8 @@ RUN curl -SL https://github.com/docker/compose/releases/download/v2.24.5/docker-
 RUN groupadd -for -g 998 docker \
     && usermod -aG docker jenkins \
     && echo 'jenkins ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
-
+# 安装git
+RUN apt-get install git
 USER jenkins
 
 # 安装 Jenkins 插件
@@ -92,3 +93,6 @@ docker run \
   --volume /data/jenkins:/var/jenkins_home \
   --volume jenkins-docker-certs:/certs/client:ro \
   myjenkins-blueocean:2.516.1-2
+
+
+docker run   --name jenkins-blueocean   --restart=on-failure   --detach   --network jenkins   --env DOCKER_HOST=tcp://docker:2376   --env DOCKER_CERT_PATH=/certs/client   --env DOCKER_TLS_VERIFY=1   --publish 8080:8080   --publish 50000:50000   --volume jenkins-data:/var/jenkins_home   --volume jenkins-docker-certs:/certs/client:ro   myjenkins-blueocean:2.516.1-3
