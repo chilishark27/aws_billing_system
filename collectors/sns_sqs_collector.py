@@ -12,20 +12,21 @@ class SNSSQSCollector(BaseCollector):
         """扫描单个区域的SNS和SQS资源"""
         services = []
         
-        # SNS主题
+        # SNS主题 - 按量付费，有免费额度
         try:
             sns = self.get_client('sns', region)
             topics = sns.list_topics()
             
             for topic in topics['Topics']:
-                # SNS主题基础成本很低，主要按消息数量计费
-                hourly_cost = 0.001  # 基础成本
+                # SNS: 前100万次发布免费，超出部分$0.50/百万次
+                # 大部分小型应用在免费额度内
+                hourly_cost = 0.0  # 免费额度内
                 
                 services.append({
                     'service': 'SNS',
                     'resource_id': topic['TopicArn'].split(':')[-1],
                     'region': region,
-                    'instance_type': 'Topic',
+                    'instance_type': 'Topic (Free Tier)',
                     'hourly_cost': hourly_cost,
                     'daily_cost': hourly_cost * 24
                 })
@@ -33,7 +34,7 @@ class SNSSQSCollector(BaseCollector):
             if hasattr(self, 'logger'):
                 self.logger.error(f"扫描SNS失败 ({region}): {e}")
         
-        # SQS队列
+        # SQS队列 - 按量付费，有免费额度
         try:
             sqs = self.get_client('sqs', region)
             queues = sqs.list_queues()
@@ -41,14 +42,15 @@ class SNSSQSCollector(BaseCollector):
             for queue_url in queues.get('QueueUrls', []):
                 queue_name = queue_url.split('/')[-1]
                 
-                # SQS队列基础成本很低，主要按请求数量计费
-                hourly_cost = 0.001  # 基础成本
+                # SQS: 前100万次请求免费，超出部分$0.40/百万次
+                # 大部分小型应用在免费额度内
+                hourly_cost = 0.0  # 免费额度内
                 
                 services.append({
                     'service': 'SQS',
                     'resource_id': queue_name,
                     'region': region,
-                    'instance_type': 'Queue',
+                    'instance_type': 'Queue (Free Tier)',
                     'hourly_cost': hourly_cost,
                     'daily_cost': hourly_cost * 24
                 })
