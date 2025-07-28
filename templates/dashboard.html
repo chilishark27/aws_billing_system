@@ -149,9 +149,13 @@
 
             document.getElementById('hourly-cost').textContent = `$${data.total_hourly.toFixed(2)}`;
             document.getElementById('daily-cost').textContent = `$${data.total_daily.toFixed(2)}`;
-            document.getElementById('resource-count').textContent = data.details.length;
-
-            updateResourcesTable(data.details);
+            
+            // 获取资源详情
+            const resourcesResponse = await fetch('/api/resource_details');
+            const resources = await resourcesResponse.json();
+            
+            document.getElementById('resource-count').textContent = resources.length;
+            updateResourcesTable(resources);
         } catch (error) {
             console.error('数据加载失败:', error);
         }

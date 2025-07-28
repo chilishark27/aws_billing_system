@@ -60,21 +60,7 @@ def ebs_page():
 def vpc_page():
     return render_template('vpc.html')
 
-@app.route('/fsx')
-def fsx_page():
-    return render_template('fsx.html')
 
-@app.route('/cloudwatch')
-def cloudwatch_page():
-    return render_template('cloudwatch.html')
-
-@app.route('/waf')
-def waf_page():
-    return render_template('waf.html')
-
-@app.route('/amazonq')
-def amazonq_page():
-    return render_template('amazonq.html')
 
 @app.route('/cloudfront')
 def cloudfront_page():
@@ -209,44 +195,26 @@ def service_data(service_type):
 def resource_details():
     """获取资源详细信息"""
     try:
-        conn = db_manager.get_connection()
+        summary = db_manager.get_latest_summary()
+        if not summary:
+            logger.warning("没有找到最新的成本数据")
+            return jsonify([])
         
+        conn = db_manager.get_connection()
         if db_manager.db_type == 'sqlite':
             conn.row_factory = sqlite3.Row
         
         cursor = conn.cursor()
-        
-        # 获取最新时间戳
-        cursor.execute('''
-            SELECT timestamp FROM cost_summary 
-            ORDER BY timestamp DESC LIMIT 1
-        ''')
-        latest_timestamp = cursor.fetchone()
-        
-        if not latest_timestamp:
-            conn.close()
-            return jsonify([])
-        
-        timestamp = latest_timestamp[0] if db_manager.db_type != 'sqlite' else latest_timestamp['timestamp']
-        
-        # 获取资源详情
         placeholder = '?' if db_manager.db_type == 'sqlite' else '%s'
         
-        if db_manager.db_type == 'sqlite':
-            cursor.execute(f'''
-                SELECT *, json_extract(details, '$.instance_type') as instance_type
-                FROM cost_records 
-                WHERE timestamp = {placeholder}
-                ORDER BY service_type, daily_cost DESC
-            ''', (timestamp,))
-        else:
-            cursor.execute(f'''
-                SELECT * FROM cost_records 
-                WHERE timestamp = {placeholder}
-                ORDER BY service_type, daily_cost DESC
-            ''', (timestamp,))
+        cursor.execute(f'''
+            SELECT * FROM cost_records 
+            WHERE timestamp = {placeholder}
+            ORDER BY service_type, daily_cost DESC
+        ''', (summary['timestamp'],))
         
         resources = cursor.fetchall()
+        logger.info(f"找到 {len(resources)} 个资源")
         conn.close()
         
         if db_manager.db_type == 'sqlite':
@@ -256,7 +224,6 @@ def resource_details():
             result = []
             for row in resources:
                 resource_dict = dict(zip(columns, row))
-                # 解析details中的instance_type
                 try:
                     details = json.loads(resource_dict['details'])
                     resource_dict['instance_type'] = details.get('instance_type', '')
@@ -272,51 +239,69 @@ def resource_details():
 @app.route('/api/monthly_summary')
 def monthly_summary():
     """获取月度成本汇总"""
-    import sqlite3
-    
-    conn = sqlite3.connect('data/cost_history.db')
-    conn.row_factory = sqlite3.Row
-    
-    monthly_data = conn.execute('''
-        SELECT * FROM monthly_summary 
-        ORDER BY year_month DESC LIMIT 6
-    ''').fetchall()
-    
-    conn.close()
-    return jsonify([dict(row) for row in monthly_data])
+    try:
+        conn = db_manager.get_connection()
+        if db_manager.db_type == 'sqlite':
+            conn.row_factory = sqlite3.Row
+        
+        cursor = conn.cursor()
+        cursor.execute('''
+            SELECT * FROM monthly_summary 
+            ORDER BY year_month DESC LIMIT 6
+        ''')
+        monthly_data = cursor.fetchall()
+        conn.close()
+        
+        if db_manager.db_type == 'sqlite':
+            return jsonify([dict(row) for row in monthly_data])
+        else:
+            columns = ['id', 'year_month', 'total_monthly_cost', 'service_breakdown', 'created_at']
+            return jsonify([dict(zip(columns, row)) for row in monthly_data])
+    except Exception as e:
+        logger.error(f"获取月度数据失败: {e}")
+        return jsonify({'error': '获取月度数据失败'}), 500
 
 @app.route('/api/current_month')
 def current_month():
     """获取当月成本统计"""
-    import sqlite3
-    import json
-    from datetime import datetime
-    
-    current_month = datetime.now().strftime('%Y-%m')
-    
-    conn = sqlite3.connect('data/cost_history.db')
-    conn.row_factory = sqlite3.Row
-    
-    month_data = conn.execute('''
-        SELECT * FROM monthly_summary 
-        WHERE year_month = ?
-    ''', (current_month,)).fetchone()
-    
-    if not month_data:
+    try:
+        current_month_str = datetime.now().strftime('%Y-%m')
+        
+        conn = db_manager.get_connection()
+        if db_manager.db_type == 'sqlite':
+            conn.row_factory = sqlite3.Row
+        
+        cursor = conn.cursor()
+        placeholder = '?' if db_manager.db_type == 'sqlite' else '%s'
+        
+        cursor.execute(f'''
+            SELECT * FROM monthly_summary 
+            WHERE year_month = {placeholder}
+        ''', (current_month_str,))
+        month_data = cursor.fetchone()
         conn.close()
-        return jsonify({
-            'year_month': current_month,
-            'total_monthly_cost': 0.0,
-            'service_breakdown': {},
-            'days_in_month': datetime.now().day
-        })
-    
-    result = dict(month_data)
-    result['service_breakdown'] = json.loads(result['service_breakdown']) if result['service_breakdown'] else {}
-    result['days_in_month'] = datetime.now().day
-    
-    conn.close()
-    return jsonify(result)
+        
+        if not month_data:
+            return jsonify({
+                'year_month': current_month_str,
+                'total_monthly_cost': 0.0,
+                'service_breakdown': {},
+                'days_in_month': datetime.now().day
+            })
+        
+        if db_manager.db_type == 'sqlite':
+            result = dict(month_data)
+        else:
+            columns = ['id', 'year_month', 'total_monthly_cost', 'service_breakdown', 'created_at']
+            result = dict(zip(columns, month_data))
+        
+        result['service_breakdown'] = json.loads(result['service_breakdown']) if result['service_breakdown'] else {}
+        result['days_in_month'] = datetime.now().day
+        
+        return jsonify(result)
+    except Exception as e:
+        logger.error(f"获取当月数据失败: {e}")
+        return jsonify({'error': '获取当月数据失败'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)
