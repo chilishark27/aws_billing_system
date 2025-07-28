@@ -78,7 +78,7 @@ USER jenkins
 # 安装 Jenkins 插件
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
 
-a
+aa
 xa
 
 docker run \
