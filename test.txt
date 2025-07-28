@@ -62,9 +62,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # 安装 docker-compose v2 CLI
-RUN curl -SL https://github.com/docker/compose/releases/download/v2.24.5/docker-compose-linux-x86_64 \
+RUN curl -SL "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" \
       -o /usr/local/bin/docker-compose \
-    && chmod +x /usr/local/bin/docker-compose
+    && chmod +x /usr/local/bin/docker-compose\
+    && RUN ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 # 创建 docker 组并将 jenkins 用户加入其中（匹配宿主机 docker.sock 的 group ID）
 RUN groupadd -for -g 998 docker \
@@ -81,18 +82,20 @@ RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
 
 
 docker run \
-  --name jenkins-blueocean \
+  --name jenkins \
+  -u root \
   --restart=on-failure \
   --detach \
   --network jenkins \
-  --env DOCKER_HOST=tcp://docker:2376 \
-  --env DOCKER_CERT_PATH=/certs/client \
-  --env DOCKER_TLS_VERIFY=1 \
+  --privileged \
   --publish 8080:8080 \
   --publish 50000:50000 \
   --volume /data/jenkins:/var/jenkins_home \
   --volume jenkins-docker-certs:/certs/client:ro \
-  myjenkins-blueocean:2.516.1-2
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(which docker):/usr/bin/docker \
+  -v $(which docker-compose):/usr/bin/docker-compose \
+  myjenkins-blueocean:2.516.1-4
 
 
 docker run   --name jenkins-blueocean   --restart=on-failure   --detach   --network jenkins   --env DOCKER_HOST=tcp://docker:2376   --env DOCKER_CERT_PATH=/certs/client   --env DOCKER_TLS_VERIFY=1   --publish 8080:8080   --publish 50000:50000   --volume jenkins-data:/var/jenkins_home   --volume jenkins-docker-certs:/certs/client:ro   myjenkins-blueocean:2.516.1-3
