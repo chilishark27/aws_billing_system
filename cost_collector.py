@@ -17,6 +17,14 @@ from utils.logger import setup_logger, get_log_config
 from collectors.ec2_collector import EC2Collector
 from collectors.vpc_collector import VPCCollector
 from collectors.rds_collector import RDSCollector
+from collectors.ebs_collector import EBSCollector
+from collectors.s3_collector import S3Collector
+from collectors.cloudfront_collector import CloudFrontCollector
+from collectors.lambda_collector import LambdaCollector
+from collectors.elb_collector import ELBCollector
+from collectors.route53_collector import Route53Collector
+from collectors.dynamodb_collector import DynamoDBCollector
+from collectors.sns_sqs_collector import SNSSQSCollector
 
 
 class CostCollectorV2:
@@ -30,9 +38,25 @@ class CostCollectorV2:
         self.db_manager = DatabaseManager(get_db_config())
         
         # 初始化各种收集器
-        self.ec2_collector = EC2Collector(self.session, self.price_manager)
-        self.vpc_collector = VPCCollector(self.session, self.price_manager)
-        self.rds_collector = RDSCollector(self.session, self.price_manager)
+        collectors = [
+            EC2Collector(self.session, self.price_manager),
+            VPCCollector(self.session, self.price_manager),
+            RDSCollector(self.session, self.price_manager),
+            EBSCollector(self.session, self.price_manager),
+            S3Collector(self.session, self.price_manager),
+            CloudFrontCollector(self.session, self.price_manager),
+            LambdaCollector(self.session, self.price_manager),
+            ELBCollector(self.session, self.price_manager),
+            Route53Collector(self.session, self.price_manager),
+            DynamoDBCollector(self.session, self.price_manager),
+            SNSSQSCollector(self.session, self.price_manager)
+        ]
+        
+        # 传递logger给收集器
+        for collector in collectors:
+            collector.logger = self.logger
+        
+        self.collectors = collectors
     
     def get_running_services(self):
         """使用多线程获取所有运行中的服务"""
@@ -42,9 +66,8 @@ class CostCollectorV2:
             futures = []
             
             # 提交收集任务
-            futures.append(executor.submit(self.ec2_collector.scan_all_regions))
-            futures.append(executor.submit(self.vpc_collector.scan_all_regions))
-            futures.append(executor.submit(self.rds_collector.scan_all_regions))
+            for collector in self.collectors:
+                futures.append(executor.submit(collector.scan_all_regions))
             
             # 收集结果
             for future in as_completed(futures):

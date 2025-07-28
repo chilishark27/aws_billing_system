@@ -85,7 +85,10 @@ class VPCCollector(BaseCollector):
                 })
                 
         except Exception as e:
-            print(f"扫描VPC失败 ({region}): {e}")
+            if hasattr(self, 'logger'):
+                self.logger.error(f"扫描VPC失败 ({region}): {e}")
+            else:
+                print(f"扫描VPC失败 ({region}): {e}")
         return services
     
     def scan_all_regions(self):

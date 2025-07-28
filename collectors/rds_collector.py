@@ -27,7 +27,10 @@ class RDSCollector(BaseCollector):
                         'daily_cost': hourly_cost * 24
                     })
         except Exception as e:
-            print(f"扫描RDS失败 ({region}): {e}")
+            if hasattr(self, 'logger'):
+                self.logger.error(f"扫描RDS失败 ({region}): {e}")
+            else:
+                print(f"扫描RDS失败 ({region}): {e}")
         return services
     
     def scan_all_regions(self):
