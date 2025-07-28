@@ -22,7 +22,7 @@ def start_web_app():
     subprocess.run(['python', 'app.py'])
 
 def main():
-    print("=== AWS成本监控系统启动 ===")
+    print("=== AWS成本监控系统启动 (模块化版本) ===")
     
     # 确保数据目录存在
     os.makedirs('data', exist_ok=True)
@@ -35,6 +35,7 @@ def main():
     print("\n🌐 Web界面将在 http://localhost 启动")
     print("📊 数据收集器每小时自动运行")
     print("🔄 页面每5分钟自动刷新")
+    print("🏗️ 架构: 模块化 (collectors/, pricing/, database/)")
     
     start_web_app()
 
