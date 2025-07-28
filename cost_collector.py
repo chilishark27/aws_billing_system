@@ -343,29 +343,34 @@ class CostCollector:
             try:
                 ec2 = self.session.client('ec2', region_name=region)
                 
-                # NAT Gateway
+                # NAT Gateway (包含其Public IP成本)
                 nat_gateways = ec2.describe_nat_gateways(
                     Filters=[{'Name': 'state', 'Values': ['available']}]
                 )['NatGateways']
                 
                 for nat in nat_gateways:
-                    # 获取NAT Gateway真实价格
-                    hourly_cost = self.get_nat_gateway_price(region)
+                    # NAT Gateway基础价格
+                    nat_hourly_cost = self.get_nat_gateway_price(region)
+                    # NAT Gateway的Public IP也要收费
+                    public_ip_cost = 0.005
+                    total_hourly_cost = nat_hourly_cost + public_ip_cost
+                    
                     services.append({
                         'service': 'VPC',
                         'resource_id': nat['NatGatewayId'],
                         'region': region,
-                        'instance_type': 'NAT Gateway',
-                        'hourly_cost': hourly_cost,
-                        'daily_cost': hourly_cost * 24
+                        'instance_type': 'NAT Gateway (含Public IP)',
+                        'hourly_cost': total_hourly_cost,
+                        'daily_cost': total_hourly_cost * 24
                     })
                 
-                # Elastic IP (未关联的)
+                # Elastic IP 和 Public IP (2024年2月1日起所有Public IP都收费)
                 addresses = ec2.describe_addresses()['Addresses']
                 for addr in addresses:
-                    if 'InstanceId' not in addr:  # 未关联的EIP
-                        # EIP价格相对固定
-                        hourly_cost = 0.005
+                    # 所有Public IP都收费: $0.005/小时
+                    hourly_cost = 0.005
+                    if 'InstanceId' not in addr:
+                        # 未关联的EIP
                         services.append({
                             'service': 'VPC',
                             'resource_id': addr['AllocationId'],
@@ -374,6 +379,39 @@ class CostCollector:
                             'hourly_cost': hourly_cost,
                             'daily_cost': hourly_cost * 24
                         })
+                    else:
+                        # 已关联的EIP (现在也收费)
+                        services.append({
+                            'service': 'VPC',
+                            'resource_id': addr['AllocationId'],
+                            'region': region,
+                            'instance_type': f'EIP (attached to {addr["InstanceId"]})',
+                            'hourly_cost': hourly_cost,
+                            'daily_cost': hourly_cost * 24
+                        })
+                
+                # EC2实例的Public IP (非EIP)
+                instances = ec2.describe_instances(
+                    Filters=[{'Name': 'instance-state-name', 'Values': ['running']}]
+                )['Reservations']
+                
+                for reservation in instances:
+                    for instance in reservation['Instances']:
+                        # 检查是否有Public IP但不是EIP
+                        if instance.get('PublicIpAddress'):
+                            # 检查是否不是EIP (EIP会在上面处理)
+                            is_eip = any(addr.get('InstanceId') == instance['InstanceId'] for addr in addresses)
+                            if not is_eip:
+                                # 实例的临时Public IP也收费
+                                hourly_cost = 0.005
+                                services.append({
+                                    'service': 'VPC',
+                                    'resource_id': f"public-ip-{instance['InstanceId']}",
+                                    'region': region,
+                                    'instance_type': f'Public IP ({instance["InstanceId"]})',
+                                    'hourly_cost': hourly_cost,
+                                    'daily_cost': hourly_cost * 24
+                                })
                         
             except Exception as e:
                 print(f"扫描VPC失败 ({region}): {e}")
@@ -1013,6 +1051,11 @@ class CostCollector:
         fallback_price = 0.045  # 备用价格
         threading.Timer(60.0, self.update_real_price, args=['natgateway', region, 'vpc']).start()
         return fallback_price
+    
+    def get_public_ip_price(self, region='us-east-1'):
+        """获取Public IP价格 - 2024年2月1日起统一收费"""
+        # AWS Public IP统一价格: $0.005/小时 (约$3.6/月)
+        return 0.005
     
     def get_real_price_sync(self, instance_type, region, service_type):
         """同步获取AWS实时价格"""
