@@ -79,7 +79,7 @@ USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow json-path-api"
 
 a
-x
+xa
 
 docker run \
   --name jenkins \
