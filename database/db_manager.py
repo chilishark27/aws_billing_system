@@ -122,6 +122,12 @@ class DatabaseManager:
             )
         ''')
         
+        if self.db_type != 'sqlite':
+            try:
+                cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS idx_lambda_records_unique ON lambda_records(timestamp, resource_id, region)')
+            except:
+                pass
+        
         cursor.execute(f'''
             CREATE TABLE IF NOT EXISTS monthly_summary (
                 id {id_type},
@@ -132,7 +138,12 @@ class DatabaseManager:
             )
         ''')
         
-        if self.db_type != 'sqlite':
+        if self.db_type == 'mysql':
+            try:
+                cursor.execute('CREATE UNIQUE INDEX idx_monthly_summary_year_month ON monthly_summary(year_month)')
+            except:
+                pass
+        elif self.db_type == 'postgresql':
             try:
                 cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS idx_monthly_summary_year_month ON monthly_summary(year_month)')
             except:
@@ -190,13 +201,28 @@ class DatabaseManager:
                         service['daily_cost'],
                         json.dumps(service)
                     ))
-                else:
+                elif self.db_type == 'mysql':
                     cursor.execute(f'''
                         INSERT INTO lambda_records 
                         (timestamp, resource_id, region, hourly_cost, daily_cost, details)
                         VALUES ({placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder})
                         ON DUPLICATE KEY UPDATE 
                         hourly_cost = VALUES(hourly_cost), daily_cost = VALUES(daily_cost), details = VALUES(details)
+                    ''', (
+                        timestamp,
+                        service['resource_id'],
+                        service['region'],
+                        service['hourly_cost'],
+                        service['daily_cost'],
+                        json.dumps(service)
+                    ))
+                else:  # postgresql
+                    cursor.execute(f'''
+                        INSERT INTO lambda_records 
+                        (timestamp, resource_id, region, hourly_cost, daily_cost, details)
+                        VALUES ({placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder})
+                        ON CONFLICT (timestamp, resource_id, region) DO UPDATE SET
+                        hourly_cost = EXCLUDED.hourly_cost, daily_cost = EXCLUDED.daily_cost, details = EXCLUDED.details
                     ''', (
                         timestamp,
                         service['resource_id'],
@@ -226,8 +252,11 @@ class DatabaseManager:
     def get_latest_summary(self):
         """获取最新的成本汇总"""
         conn = self.get_connection()
-        cursor = conn.cursor()
         
+        if self.db_type == 'sqlite':
+            conn.row_factory = sqlite3.Row
+        
+        cursor = conn.cursor()
         cursor.execute('''
             SELECT * FROM cost_summary 
             ORDER BY timestamp DESC LIMIT 1
@@ -238,13 +267,7 @@ class DatabaseManager:
         
         if result:
             if self.db_type == 'sqlite':
-                conn.row_factory = sqlite3.Row
-                conn = self.get_connection()
-                cursor = conn.cursor()
-                cursor.execute('SELECT * FROM cost_summary ORDER BY timestamp DESC LIMIT 1')
-                result = cursor.fetchone()
-                conn.close()
-                return dict(result) if result else None
+                return dict(result)
             else:
                 columns = ['id', 'timestamp', 'total_hourly_cost', 'total_daily_cost', 'service_breakdown']
                 return dict(zip(columns, result))
