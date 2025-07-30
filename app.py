@@ -66,9 +66,63 @@ def vpc_page():
 def cloudfront_page():
     return render_template('cloudfront.html')
 
+@app.route('/traffic')
+def traffic_page():
+    """流量费用页面"""
+    # 返回空数据的页面，由前端异步加载数据
+    return render_template('traffic.html', 
+                         traffic_data=[],
+                         summary={'total_cost': 0, 'total_resources': 0, 'total_volume_gb': 0, 'active_regions': 0},
+                         service_breakdown={})
+
+@app.route('/api/traffic_data')
+def traffic_data_api():
+    """获取流量费用数据 API"""
+    try:
+        from collectors.traffic_collector import TrafficCollector
+        from pricing.price_manager import PriceManager
+        
+        traffic_collector = TrafficCollector(price_manager=PriceManager())
+        traffic_data = traffic_collector.scan_all_regions()
+        
+        # 计算汇总信息
+        summary = {
+            'total_cost': sum([item.get('monthly_cost', 0) for item in traffic_data]),
+            'total_resources': len(traffic_data),
+            'total_volume_gb': sum([item.get('details', {}).get('volume_gb', 0) for item in traffic_data]),
+            'active_regions': len(set([item.get('region', '') for item in traffic_data if item.get('region')]))
+        }
+        
+        # 按服务分组
+        service_breakdown = {}
+        for item in traffic_data:
+            service = item['service']
+            if service not in service_breakdown:
+                service_breakdown[service] = {
+                    'total_cost': 0,
+                    'resource_count': 0,
+                    'total_volume_gb': 0
+                }
+            service_breakdown[service]['total_cost'] += item.get('monthly_cost', 0)
+            service_breakdown[service]['resource_count'] += 1
+            service_breakdown[service]['total_volume_gb'] += item.get('details', {}).get('volume_gb', 0)
+        
+        return jsonify({
+            'traffic_data': traffic_data,
+            'summary': summary,
+            'service_breakdown': service_breakdown
+        })
+    except Exception as e:
+        logger.error(f"获取流量费用数据失败: {e}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/all-resources')
 def all_resources_page():
     return render_template('all_resources.html')
+
+@app.route('/test-dashboard')
+def test_dashboard():
+    return render_template('../test_dashboard.html')
 
 @app.route('/api/current_cost')
 def current_cost():
@@ -302,6 +356,55 @@ def current_month():
     except Exception as e:
         logger.error(f"获取当月数据失败: {e}")
         return jsonify({'error': '获取当月数据失败'}), 500
+
+@app.route('/api/traffic_summary')
+def traffic_summary():
+    """获取流量费用汇总信息"""
+    try:
+        # 直接从数据库查询Traffic类型的费用
+        conn = db_manager.get_connection()
+        cursor = conn.cursor()
+        
+        # 获取最新时间戳
+        cursor.execute('SELECT timestamp FROM cost_summary ORDER BY timestamp DESC LIMIT 1')
+        latest_timestamp = cursor.fetchone()
+        
+        if not latest_timestamp:
+            conn.close()
+            return jsonify({'traffic_cost': 0, 'traffic_percentage': 0, 'total_cost': 0})
+        
+        timestamp = latest_timestamp[0]
+        
+        # 查询Traffic类型的费用
+        cursor.execute('''
+            SELECT COALESCE(SUM(daily_cost), 0) as traffic_cost 
+            FROM cost_records 
+            WHERE timestamp = ? AND service_type = 'Traffic'
+        ''', (timestamp,))
+        traffic_result = cursor.fetchone()
+        traffic_cost = traffic_result[0] if traffic_result else 0
+        
+        # 查询总费用
+        cursor.execute('''
+            SELECT total_daily_cost 
+            FROM cost_summary 
+            WHERE timestamp = ?
+        ''', (timestamp,))
+        total_result = cursor.fetchone()
+        total_cost = total_result[0] if total_result else 0
+        
+        conn.close()
+        
+        traffic_percentage = (traffic_cost / total_cost * 100) if total_cost > 0 else 0
+        
+        return jsonify({
+            'traffic_cost': round(traffic_cost, 4),
+            'traffic_percentage': round(traffic_percentage, 1),
+            'total_cost': round(total_cost, 4)
+        })
+    except Exception as e:
+        logger.error(f"获取流量费用汇总失败: {e}")
+        return jsonify({'traffic_cost': 0, 'traffic_percentage': 0, 'total_cost': 0}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

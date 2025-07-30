@@ -169,13 +169,24 @@ class DatabaseManager:
         # 保存详细记录（排除Lambda）
         for service in services:
             if service['service'] != 'Lambda':
+                # 对于流量相关服务，使用统一的服务类型
+                service_type = service['service']
+                if service_type in ['NAT Gateway', 'VPC Endpoint', 'ELB', 'CloudFront', 'Route 53', 'EC2']:
+                    # 检查是否为流量相关的EC2记录
+                    if service_type == 'EC2':
+                        details = service.get('details', {})
+                        if details.get('traffic_type') == 'Data Transfer Out':
+                            service_type = 'Traffic'
+                    else:
+                        service_type = 'Traffic'  # 其他流量服务统一归类
+                
                 cursor.execute(f'''
                     INSERT INTO cost_records 
                     (timestamp, service_type, resource_id, region, hourly_cost, daily_cost, details)
                     VALUES ({placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder}, {placeholder})
                 ''', (
                     timestamp,
-                    service['service'],
+                    service_type,
                     service['resource_id'],
                     service['region'],
                     service['hourly_cost'],
@@ -185,7 +196,7 @@ class DatabaseManager:
                 
                 total_hourly += service['hourly_cost']
                 total_daily += service['daily_cost']
-                service_breakdown[service['service']] += service['daily_cost']
+                service_breakdown[service_type] += service['daily_cost']
             else:
                 # Lambda数据单独保存
                 if self.db_type == 'sqlite':
@@ -302,7 +313,7 @@ class DatabaseManager:
             cursor.execute(f'''
                 SELECT SUM(hourly_cost) as total_hourly, SUM(daily_cost) as total_daily
                 FROM cost_records 
-                WHERE timestamp = {placeholder} AND service_type != 'LAMBDA'
+                WHERE timestamp = {placeholder}
             ''', (timestamp,))
             costs = cursor.fetchone()
             

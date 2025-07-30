@@ -25,6 +25,7 @@ from collectors.elb_collector import ELBCollector
 from collectors.route53_collector import Route53Collector
 from collectors.dynamodb_collector import DynamoDBCollector
 from collectors.sns_sqs_collector import SNSSQSCollector
+from collectors.traffic_collector import TrafficCollector
 
 
 class CostCollectorV2:
@@ -49,7 +50,8 @@ class CostCollectorV2:
             ELBCollector(self.session, self.price_manager),
             Route53Collector(self.session, self.price_manager),
             DynamoDBCollector(self.session, self.price_manager),
-            SNSSQSCollector(self.session, self.price_manager)
+            SNSSQSCollector(self.session, self.price_manager),
+            TrafficCollector(self.session, self.price_manager)
         ]
         
         # 传递logger给收集器

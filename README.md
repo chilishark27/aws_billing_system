@@ -23,7 +23,8 @@
 ## 🚀 核心特性
 
 - 💰 **AWS官方实时价格** - 直接调用AWS Pricing API获取准确价格
-- 🌐 **12种服务监控** - EC2、RDS、Lambda、S3、EBS、VPC、FSx、CloudWatch、WAF、Amazon Q、CloudFront
+- 🌐 **13种服务监控** - EC2、RDS、Lambda、S3、EBS、VPC、FSx、CloudWatch、WAF、Amazon Q、CloudFront、流量费用
+- 📡 **流量费用监控** - NAT Gateway、VPC端点、ELB、CloudFront、Route 53流量费用
 - ⏰ **每小时自动收集** - 定时扫描所有区域的AWS资源
 - 📊 **现代化Web界面** - 响应式设计，左侧导航，实时数据可视化
 - 📈 **月度计费重置** - 自动按月重置计费，保留历史账单
@@ -46,6 +47,7 @@
 | **DynamoDB** | 数据库表 | 按需/预置容量 |
 | **SNS** | 主题 | 按量付费 (前1000万次免费) |
 | **SQS** | 队列 | 按量付费 (前100万次免费) |
+| **流量费用** | 数据传输、NAT Gateway、VPC端点等 | 按流量/GB |
 
 ## 🌍 支持的AWS区域
 
@@ -111,6 +113,7 @@ python start.py
 - 每个AWS服务独立页面
 - 服务特定的资源列表
 - 成本分析和趋势
+- 流量费用专页：显示数据传输、NAT Gateway、VPC端点等流量相关费用
 
 ### 月度计费
 - 自动按月重置计费

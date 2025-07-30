@@ -5,6 +5,7 @@
 {% block content %}
 <div class="page-header">
     <h1 class="page-title"><i class="fas fa-chart-line"></i> 成本总览</h1>
+
 </div>
 
 <button class="refresh-btn" onclick="refreshData()">
@@ -142,7 +143,7 @@
             const data = await response.json();
             
             if (data.error) {
-                console.error('加载成本数据失败:', data.error);
+                alert(data.error);
                 return;
             }
 
@@ -154,6 +155,9 @@
             const resources = await resourcesResponse.json();
             
             updateResourcesTable(resources);
+            
+            // 加载流量费用信息
+            await loadTrafficSummary();
         } catch (error) {
             console.error('数据加载失败:', error);
         }
@@ -202,47 +206,6 @@
         }
     }
 
-    async function loadTrafficSummary() {
-        try {
-            console.log('开始加载流量费用数据...');
-            const response = await fetch('/api/traffic_summary');
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-            
-            const data = await response.json();
-            console.log('流量费用API返回:', data);
-            
-            const trafficCostElement = document.getElementById('traffic-cost');
-            const trafficPercentageElement = document.getElementById('traffic-percentage');
-            
-            if (trafficCostElement) {
-                trafficCostElement.textContent = `$${(data.traffic_cost || 0).toFixed(2)}`;
-                console.log('已更新流量费用显示:', trafficCostElement.textContent);
-            }
-            
-            if (trafficPercentageElement) {
-                trafficPercentageElement.textContent = `${(data.traffic_percentage || 0).toFixed(1)}%`;
-                console.log('已更新流量费用占比:', trafficPercentageElement.textContent);
-            }
-            
-        } catch (error) {
-            console.error('流量费用数据加载失败:', error);
-            
-            const trafficCostElement = document.getElementById('traffic-cost');
-            const trafficPercentageElement = document.getElementById('traffic-percentage');
-            
-            if (trafficCostElement) {
-                trafficCostElement.textContent = '$0.00';
-            }
-            
-            if (trafficPercentageElement) {
-                trafficPercentageElement.textContent = '0.0%';
-            }
-        }
-    }
-
     function updateResourcesTable(resources) {
         const tbody = document.getElementById('resources-tbody');
         tbody.innerHTML = '';
@@ -276,6 +239,36 @@
         });
     }
 
+    async function loadTrafficSummary() {
+        try {
+            const response = await fetch('/api/traffic_summary');
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+            const data = await response.json();
+            
+            console.log('Traffic summary data:', data);
+            
+            const trafficCostElement = document.getElementById('traffic-cost');
+            const trafficPercentageElement = document.getElementById('traffic-percentage');
+            
+            if (trafficCostElement && trafficPercentageElement) {
+                trafficCostElement.textContent = `$${(data.traffic_cost || 0).toFixed(2)}`;
+                trafficPercentageElement.textContent = `${(data.traffic_percentage || 0).toFixed(1)}%`;
+            }
+        } catch (error) {
+            console.error('流量费用数据加载失败:', error);
+            
+            const trafficCostElement = document.getElementById('traffic-cost');
+            const trafficPercentageElement = document.getElementById('traffic-percentage');
+            
+            if (trafficCostElement && trafficPercentageElement) {
+                trafficCostElement.textContent = '$0.00';
+                trafficPercentageElement.textContent = '0.0%';
+            }
+        }
+    }
+
     async function refreshData() {
         showLoading(true);
         
@@ -287,19 +280,15 @@
                 loadMonthlyTrend(),
                 loadTrafficSummary()
             ]);
-            console.log('所有数据加载完成');
-        } catch (error) {
-            console.error('数据刷新失败:', error);
         } finally {
             showLoading(false);
         }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('页面加载完成，开始初始化...');
         initChart();
         refreshData();
-        setInterval(refreshData, 180000); // 每3分钟刷新一次
+        setInterval(refreshData, 180000);
     });
 </script>
 {% endblock %}

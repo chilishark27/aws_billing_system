@@ -246,6 +246,7 @@
         }
 
         .service-ec2 { background: #fff3cd; color: #856404; }
+        .service-traffic { background: #f3e5f5; color: #4a148c; }
         .service-rds { background: #d1ecf1; color: #0c5460; }
         .service-lambda { background: #d4edda; color: #155724; }
         .service-s3 { background: #f8d7da; color: #721c24; }
@@ -256,10 +257,17 @@
         .service-waf { background: #ffe6e6; color: #8b0000; }
         .service-amazon { background: #fff3e0; color: #e65100; }
         .service-cloudfront { background: #e3f2fd; color: #0d47a1; }
+        .service-traffic { background: #f3e5f5; color: #4a148c; }
+        .service-natgateway { background: #e8f5e8; color: #2e7d32; }
+        .service-vpcendpoint { background: #fff8e1; color: #f57f17; }
+        .service-route53 { background: #fce4ec; color: #c2185b; }
+        .service-ec2 { background: #e8f5e8; color: #2e7d32; }
 
         .cost-high { color: var(--accent-color); font-weight: 700; }
         .cost-medium { color: var(--warning-color); font-weight: 600; }
         .cost-low { color: var(--success-color); font-weight: 500; }
+        
+        .gap-2 { gap: 0.5rem; }
 
         .refresh-btn {
             background: linear-gradient(135deg, var(--secondary-color), #2980b9);
@@ -399,6 +407,11 @@
             <li class="nav-item">
                 <a href="/cloudfront" class="nav-link {% if request.endpoint == 'cloudfront_page' %}active{% endif %}">
                     <i class="fas fa-globe"></i> CloudFront
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/traffic" class="nav-link {% if request.endpoint == 'traffic_page' %}active{% endif %}">
+                    <i class="fas fa-exchange-alt"></i> 流量费用
                 </a>
             </li>
             <li class="nav-item">

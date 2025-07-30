@@ -184,6 +184,57 @@ class PriceManager:
         }
         return base_price * region_multiplier.get(region, 1.0)
     
+    def get_data_transfer_price(self, volume_gb, region='us-east-1'):
+        """计算数据传输出费用"""
+        # AWS数据传输出定价（美国东部）
+        if volume_gb <= 1:  # 前1GB免费
+            return 0
+        elif volume_gb <= 10240:  # 1GB-10TB: $0.09/GB
+            return (volume_gb - 1) * 0.09
+        elif volume_gb <= 51200:  # 10TB-50TB: $0.085/GB (前10TB) + $0.070/GB
+            return 10239 * 0.09 + (volume_gb - 10240) * 0.070
+        else:  # 50TB+: 更复杂的分层计算
+            return 10239 * 0.09 + 40960 * 0.070 + (volume_gb - 51200) * 0.050
+    
+    def get_nat_gateway_price(self, region='us-east-1'):
+        """获取NAT Gateway价格"""
+        # NAT Gateway 小时费用 + 数据处理费用
+        return {
+            'hourly_rate': 0.045,  # $0.045/小时
+            'data_processing': 0.045  # $0.045/GB
+        }
+    
+    def get_vpc_endpoint_price(self, region='us-east-1'):
+        """获取VPC端点价格"""
+        return {
+            'interface_hourly': 0.01,  # Interface端点 $0.01/小时
+            'data_processing': 0.01    # 数据处理 $0.01/GB
+        }
+    
+    def get_elb_traffic_price(self, lb_type='application', region='us-east-1'):
+        """获取ELB流量处理价格"""
+        prices = {
+            'application': 0.008,  # ALB: $0.008/GB
+            'network': 0.006,      # NLB: $0.006/GB
+            'classic': 0.008       # CLB: $0.008/GB
+        }
+        return prices.get(lb_type, 0.008)
+    
+    def get_cloudfront_price(self, volume_gb, region='Global'):
+        """计算CloudFront流量费用"""
+        # CloudFront 全球定价（简化）
+        if volume_gb <= 10240:  # 前10TB: $0.085/GB
+            return volume_gb * 0.085
+        elif volume_gb <= 51200:  # 10TB-50TB: $0.070/GB
+            return 10240 * 0.085 + (volume_gb - 10240) * 0.070
+        else:  # 50TB+: $0.060/GB
+            return 10240 * 0.085 + 40960 * 0.070 + (volume_gb - 51200) * 0.060
+    
+    def get_route53_price(self, query_count):
+        """计算Route 53查询费用"""
+        # Route 53: $0.40/百万次查询
+        return (query_count / 1000000) * 0.40
+    
     def refresh_cache(self):
         """清理过期缓存"""
         now = datetime.now()

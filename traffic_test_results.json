@@ -1,0 +1,100 @@
+{
+  "total_resources": 7,
+  "total_cost": 0.71,
+  "summary": {
+    "EC2": {
+      "total_cost": 0.71,
+      "resource_count": 2,
+      "total_volume_gb": 9.06
+    },
+    "CloudFront": {
+      "total_cost": 0.0,
+      "resource_count": 5,
+      "total_volume_gb": 0.0
+    }
+  },
+  "sample_data": [
+    {
+      "service": "EC2",
+      "resource_id": "i-0c920bace4404ae2b",
+      "region": "ap-southeast-1",
+      "hourly_cost": 0.0,
+      "daily_cost": 0.0,
+      "monthly_cost": 0,
+      "details": {
+        "traffic_type": "Data Transfer Out",
+        "volume_gb": 0.17,
+        "unit_price": 0.09,
+        "instance_type": "t4g.small",
+        "public_ip": "175.41.190.90",
+        "free_tier_used": 0.1667776219546795
+      },
+      "last_updated": "2025-07-29T16:29:51.070486"
+    },
+    {
+      "service": "EC2",
+      "resource_id": "i-0e7806926475abfb9",
+      "region": "ap-northeast-1",
+      "hourly_cost": 0.000986,
+      "daily_cost": 0.0237,
+      "monthly_cost": 0.7101,
+      "details": {
+        "traffic_type": "Data Transfer Out",
+        "volume_gb": 8.89,
+        "unit_price": 0.09,
+        "instance_type": "r6a.large",
+        "public_ip": "54.248.76.5",
+        "free_tier_used": 1
+      },
+      "last_updated": "2025-07-29T16:30:10.554030"
+    },
+    {
+      "service": "CloudFront",
+      "resource_id": "E2NUM4EQWQOEA",
+      "region": "Global",
+      "hourly_cost": 0.0,
+      "daily_cost": 0.0,
+      "monthly_cost": 0.0,
+      "details": {
+        "traffic_type": "Data Transfer Out",
+        "volume_gb": 0.0,
+        "unit_price": 0.085,
+        "domain_name": "d1jua6eglmhoas.cloudfront.net",
+        "status": "Deployed"
+      },
+      "last_updated": "2025-07-29T16:30:18.285195"
+    },
+    {
+      "service": "CloudFront",
+      "resource_id": "E2XGHKC13UF3TC",
+      "region": "Global",
+      "hourly_cost": 0.0,
+      "daily_cost": 0.0,
+      "monthly_cost": 0.0,
+      "details": {
+        "traffic_type": "Data Transfer Out",
+        "volume_gb": 0.0,
+        "unit_price": 0.085,
+        "domain_name": "dzb7ccd2ioou4.cloudfront.net",
+        "status": "Deployed"
+      },
+      "last_updated": "2025-07-29T16:30:18.533678"
+    },
+    {
+      "service": "CloudFront",
+      "resource_id": "ES736JZJ7Y0BW",
+      "region": "Global",
+      "hourly_cost": 0.0,
+      "daily_cost": 0.0,
+      "monthly_cost": 0.0,
+      "details": {
+        "traffic_type": "Data Transfer Out",
+        "volume_gb": 0.0,
+        "unit_price": 0.085,
+        "domain_name": "d2bqparveer73t.cloudfront.net",
+        "status": "Deployed"
+      },
+      "last_updated": "2025-07-29T16:30:18.779876"
+    }
+  ]
+}

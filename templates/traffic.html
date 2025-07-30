@@ -1,0 +1,401 @@
+{% extends "base.html" %}
+
+{% block title %}流量费用监控{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title"><i class="fas fa-exchange-alt"></i> AWS 流量费用监控</h1>
+    <p class="page-subtitle">实时监控数据传输、NAT Gateway、VPC端点等流量相关费用</p>
+</div>
+
+<!-- 费用概览 -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="stat-value" id="totalCost">$0.00</div>
+        <div class="stat-label">总流量费用/月</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-server"></i>
+        </div>
+        <div class="stat-value" id="totalResources">0</div>
+        <div class="stat-label">流量资源总数</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-cloud-download-alt"></i>
+        </div>
+        <div class="stat-value" id="totalVolume">0 GB</div>
+        <div class="stat-label">总流量/月</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-globe"></i>
+        </div>
+        <div class="stat-value" id="activeRegions">0</div>
+        <div class="stat-label">活跃区域数</div>
+    </div>
+</div>
+
+<!-- 图表分析 -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="content-card">
+            <h5><i class="fas fa-chart-pie"></i> 服务费用分布</h5>
+            <canvas id="serviceChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="content-card">
+            <h5><i class="fas fa-chart-bar"></i> 资源费用排行</h5>
+            <canvas id="resourceChart" width="400" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- 资源详情卡片 -->
+<div class="row mb-4" id="resourceCards">
+    <!-- 动态生成资源卡片 -->
+</div>
+
+    <!-- 加载指示器 -->
+    <div id="loadingIndicator" class="text-center mb-4" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">加载中...</span>
+        </div>
+        <p class="mt-2">正在获取流量费用数据...</p>
+    </div>
+    
+    <!-- 错误信息 -->
+    <div id="errorMessage" class="alert alert-danger" style="display: none;"></div>
+
+<!-- 详细列表 -->
+<div class="content-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5><i class="fas fa-list"></i> 流量费用详情</h5>
+        <div class="d-flex gap-2">
+            <button class="refresh-btn" onclick="loadTrafficData()">
+                <i class="fas fa-sync-alt"></i> 刷新数据
+            </button>
+            <select id="serviceFilter" class="form-select form-select-sm">
+                <option value="">所有服务</option>
+                <option value="EC2">EC2 (数据传输)</option>
+                <option value="NAT Gateway">NAT Gateway</option>
+                <option value="VPC Endpoint">VPC Endpoint</option>
+                <option value="ELB">ELB</option>
+                <option value="CloudFront">CloudFront</option>
+                <option value="Route 53">Route 53</option>
+            </select>
+        </div>
+    </div>
+    <div class="table-container">
+        <table class="table" id="trafficTable">
+            <thead>
+                <tr>
+                    <th>服务</th>
+                    <th>资源信息</th>
+                    <th>区域</th>
+                    <th>流量类型</th>
+                    <th>流量/查询量</th>
+                    <th>月费用</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- 数据将通过JavaScript动态加载 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    <!-- 流量定价信息 -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="fas fa-info-circle"></i> AWS 流量定价参考</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>数据传输出 (Data Transfer Out)</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>前 1 GB/月</span>
+                                    <strong class="text-success">免费</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>1 GB - 10 TB/月</span>
+                                    <strong>$0.09/GB</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>10 TB - 50 TB/月</span>
+                                    <strong>$0.085/GB</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>50 TB+/月</span>
+                                    <strong>$0.070/GB</strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>其他流量费用</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>NAT Gateway 数据处理</span>
+                                    <strong>$0.045/GB</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>VPC Endpoint 数据处理</span>
+                                    <strong>$0.01/GB</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>ALB 数据处理</span>
+                                    <strong>$0.008/GB</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Route 53 查询</span>
+                                    <strong>$0.40/百万次</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let serviceChart, resourceChart;
+
+// 初始化空图表
+function initCharts() {
+    const serviceCtx = document.getElementById('serviceChart').getContext('2d');
+    serviceChart = new Chart(serviceCtx, {
+        type: 'doughnut',
+        data: { labels: [], datasets: [{ data: [], backgroundColor: [] }] },
+        options: {
+            responsive: true,
+            plugins: { 
+                legend: { position: 'bottom' },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': $' + context.parsed.toFixed(4);
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    const resourceCtx = document.getElementById('resourceChart').getContext('2d');
+    resourceChart = new Chart(resourceCtx, {
+        type: 'bar',
+        data: { labels: [], datasets: [{ label: '月费用 ($)', data: [], backgroundColor: 'rgba(102, 126, 234, 0.6)', borderColor: 'rgba(102, 126, 234, 1)', borderWidth: 1 }] },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return '月费用: $' + context.parsed.y.toFixed(4);
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { callback: function(value) { return '$' + value.toFixed(2); } }
+                },
+                x: {
+                    ticks: { maxRotation: 45 }
+                }
+            }
+        }
+    });
+}
+
+// 加载数据
+function loadTrafficData() {
+    showLoading(true);
+    
+    fetch('/api/traffic_data')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                throw new Error(data.error);
+            }
+            updateUI(data);
+        })
+        .catch(error => {
+            console.error('加载数据失败:', error);
+            document.getElementById('errorMessage').textContent = '加载数据失败: ' + error.message;
+            document.getElementById('errorMessage').style.display = 'block';
+        })
+        .finally(() => {
+            showLoading(false);
+        });
+}
+
+// 更新UI
+function updateUI(data) {
+    // 更新概览卡片
+    document.getElementById('totalCost').textContent = '$' + data.summary.total_cost.toFixed(2);
+    document.getElementById('totalResources').textContent = data.summary.total_resources;
+    document.getElementById('totalVolume').textContent = data.summary.total_volume_gb.toFixed(1) + ' GB';
+    document.getElementById('activeRegions').textContent = data.summary.active_regions;
+    
+    // 更新资源卡片
+    updateResourceCards(data.traffic_data);
+    
+    // 更新表格
+    updateTable(data.traffic_data);
+    
+    // 更新图表
+    updateCharts(data.service_breakdown, data.traffic_data);
+}
+
+// 更新资源卡片
+function updateResourceCards(trafficData) {
+    const container = document.getElementById('resourceCards');
+    container.innerHTML = '';
+    
+    // 按费用排序，只显示前6个最贵的资源
+    const topResources = trafficData
+        .sort((a, b) => b.monthly_cost - a.monthly_cost)
+        .slice(0, 6);
+    
+    topResources.forEach(item => {
+        const details = item.details || {};
+        const volumeDisplay = details.volume_gb ? details.volume_gb.toFixed(2) + ' GB' : 
+                             details.query_count ? details.query_count.toLocaleString() + ' 次' : '-';
+        
+        const card = document.createElement('div');
+        card.className = 'col-md-4 mb-3';
+        const extraDetail = details.instance_type ? `${details.instance_type} | ${details.public_ip}` : 
+                           details.service_name || details.domain_name || details.zone_name || '';
+        
+        card.innerHTML = `
+            <div class="content-card">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="service-badge service-${item.service.toLowerCase().replace(' ', '')}">${item.service}</span>
+                    <strong class="cost-${item.monthly_cost > 10 ? 'high' : item.monthly_cost > 1 ? 'medium' : 'low'}">$${item.monthly_cost.toFixed(4)}/月</strong>
+                </div>
+                <div class="resource-id mb-2">${item.resource_id}</div>
+                <div class="small text-muted mb-2">
+                    <i class="fas fa-map-marker-alt"></i> ${item.region} | 
+                    <i class="fas fa-tag"></i> ${details.traffic_type || 'Unknown'}
+                </div>
+                ${extraDetail ? `<div class="small text-muted mb-2">${extraDetail}</div>` : ''}
+                <div class="d-flex justify-content-between">
+                    <span class="small">流量量: ${volumeDisplay}</span>
+                    <span class="small">单价: ${details.unit_price ? '$' + details.unit_price.toFixed(3) : '-'}</span>
+                </div>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+// 更新表格
+function updateTable(trafficData) {
+    const tbody = document.querySelector('#trafficTable tbody');
+    tbody.innerHTML = '';
+    
+    trafficData.forEach(item => {
+        const row = document.createElement('tr');
+        row.dataset.service = item.service;
+        
+        const details = item.details || {};
+        const volumeDisplay = details.volume_gb ? details.volume_gb.toFixed(2) + ' GB' : 
+                             details.query_count ? details.query_count.toLocaleString() + ' 次' : '-';
+        
+        const extraInfo = details.service_name || details.domain_name || details.zone_name || 
+                         (details.instance_type ? `${details.instance_type} (${details.public_ip})` : '') || '';
+        
+        row.innerHTML = `
+            <td><span class="service-badge service-${item.service.toLowerCase().replace(' ', '')}">${item.service}</span></td>
+            <td>
+                <div class="resource-id">${item.resource_id.substring(0, 25)}${item.resource_id.length > 25 ? '...' : ''}</div>
+                <small class="text-muted">${extraInfo}</small>
+            </td>
+            <td><span class="badge bg-light text-dark">${item.region}</span></td>
+            <td>${details.traffic_type || '-'}</td>
+            <td>${volumeDisplay}</td>
+            <td><strong class="cost-${item.monthly_cost > 10 ? 'high' : item.monthly_cost > 1 ? 'medium' : 'low'}">$${item.monthly_cost.toFixed(4)}</strong></td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="showResourceDetails('${item.resource_id}')">
+                    <i class="fas fa-info-circle"></i> 详情
+                </button>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// 更新图表
+function updateCharts(serviceBreakdown, trafficData) {
+    // 服务费用分布
+    const serviceLabels = Object.keys(serviceBreakdown);
+    const serviceValues = Object.values(serviceBreakdown).map(s => s.total_cost);
+    
+    serviceChart.data.labels = serviceLabels;
+    serviceChart.data.datasets[0].data = serviceValues;
+    serviceChart.data.datasets[0].backgroundColor = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+    serviceChart.update();
+    
+    // 资源费用排行（前10个最贵的）
+    const topResources = trafficData
+        .sort((a, b) => b.monthly_cost - a.monthly_cost)
+        .slice(0, 10);
+    
+    const resourceLabels = topResources.map(item => item.resource_id.substring(0, 15) + '...');
+    const resourceValues = topResources.map(item => item.monthly_cost);
+    
+    resourceChart.data.labels = resourceLabels;
+    resourceChart.data.datasets[0].data = resourceValues;
+    resourceChart.update();
+}
+
+// 显示资源详情
+function showResourceDetails(resourceId) {
+    // 这里可以添加弹窗显示详细信息
+    alert('资源详情: ' + resourceId + '\n\n该功能可以进一步完善，显示更多详细信息。');
+}
+
+// 显示/隐藏加载状态
+function showLoading(show) {
+    const loading = document.getElementById('loadingIndicator');
+    if (loading) {
+        loading.style.display = show ? 'block' : 'none';
+    }
+}
+
+// 初始化
+document.addEventListener('DOMContentLoaded', function() {
+    initCharts();
+    loadTrafficData();
+});
+
+// 服务筛选功能
+document.getElementById('serviceFilter').addEventListener('change', function() {
+    const filterValue = this.value;
+    const rows = document.querySelectorAll('#trafficTable tbody tr');
+    
+    rows.forEach(row => {
+        if (filterValue === '' || row.dataset.service === filterValue) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock %}
