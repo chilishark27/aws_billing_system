@@ -356,7 +356,7 @@ class DatabaseManager:
         conn.close()
     
     def update_monthly_summary(self, daily_cost, service_breakdown):
-        """更新月度统计"""
+        """更新月度统计 - 重新计算整个月的实际成本"""
         now = datetime.now()
         current_month = now.strftime('%Y-%m')
         
@@ -365,27 +365,39 @@ class DatabaseManager:
         
         placeholder = '?' if self.db_type == 'sqlite' else '%s'
         
+        # 重新计算当月的实际总成本（基于每日最大值，避免重复计算）
         cursor.execute(f'''
-            SELECT total_monthly_cost, service_breakdown FROM monthly_summary 
+            SELECT DATE(timestamp) as date, MAX(total_daily_cost) as daily_cost 
+            FROM cost_summary 
+            WHERE timestamp LIKE {placeholder}
+            GROUP BY DATE(timestamp)
+        ''', (f'{current_month}%',))
+        
+        daily_records = cursor.fetchall()
+        actual_monthly_total = sum(record[1] for record in daily_records)
+        
+        # 重新计算服务分解（基于最新的每日数据）
+        cursor.execute(f'''
+            SELECT service_breakdown FROM cost_summary 
+            WHERE timestamp LIKE {placeholder}
+            ORDER BY timestamp DESC LIMIT 1
+        ''', (f'{current_month}%',))
+        
+        latest_breakdown = cursor.fetchone()
+        if latest_breakdown and latest_breakdown[0]:
+            try:
+                current_services = json.loads(latest_breakdown[0])
+            except:
+                current_services = {}
+        else:
+            current_services = {}
+        
+        # 更新月度汇总
+        cursor.execute(f'''
+            UPDATE monthly_summary 
+            SET total_monthly_cost = {placeholder}, service_breakdown = {placeholder}
             WHERE year_month = {placeholder}
-        ''', (current_month,))
-        
-        existing = cursor.fetchone()
-        
-        if existing:
-            current_total = existing[0]
-            current_services = json.loads(existing[1]) if existing[1] else {}
-            
-            new_total = current_total + daily_cost
-            
-            for service, cost in service_breakdown.items():
-                current_services[service] = current_services.get(service, 0) + cost
-            
-            cursor.execute(f'''
-                UPDATE monthly_summary 
-                SET total_monthly_cost = {placeholder}, service_breakdown = {placeholder}
-                WHERE year_month = {placeholder}
-            ''', (new_total, json.dumps(current_services), current_month))
+        ''', (actual_monthly_total, json.dumps(current_services), current_month))
         
         conn.commit()
         conn.close()
