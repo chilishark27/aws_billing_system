@@ -1,0 +1,16 @@
+# Prometheus配置示例
+# 将此配置添加到您的prometheus.yml中
+
+global:
+  scrape_interval: 60s
+
+scrape_configs:
+  - job_name: 'aws-cost-monitor'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 60s
+    metrics_path: /metrics
+
+# 告警规则示例
+rule_files:
+  - "aws_cost_alerts.yml"

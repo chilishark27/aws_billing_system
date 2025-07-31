@@ -1,0 +1,42 @@
+groups:
+  - name: aws_cost_alerts
+    rules:
+      # 每日成本超过阈值告警
+      - alert: AWSCostDailyHigh
+        expr: aws_cost_daily_total_usd > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "AWS每日成本过高"
+          description: "AWS每日成本为 ${{ $value }}，超过100美元阈值"
+
+      # 月度成本超过阈值告警
+      - alert: AWSCostMonthlyHigh
+        expr: aws_cost_monthly_total_usd > 1000
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "AWS月度成本过高"
+          description: "AWS月度成本为 ${{ $value }}，超过1000美元阈值"
+
+      # 单个服务成本过高告警
+      - alert: AWSServiceCostHigh
+        expr: aws_cost_daily_by_service_usd > 50
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "AWS服务 {{ $labels.service }} 成本过高"
+          description: "服务 {{ $labels.service }} 每日成本为 ${{ $value }}"
+
+      # 成本数据收集失败告警
+      - alert: AWSCostCollectionFailed
+        expr: aws_cost_collection_info{collection_status="error"} == 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "AWS成本数据收集失败"
+          description: "AWS成本数据收集出现错误: {{ $labels.error_message }}"

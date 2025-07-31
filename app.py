@@ -4,7 +4,7 @@
 AWS成本监控Web界面 V2 - 模块化版本
 """
 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, Response
 from flask_cors import CORS
 import threading
 from datetime import datetime
@@ -16,6 +16,15 @@ from cost_collector import CostCollectorV2
 import sqlite3
 import json
 import logging
+
+# Prometheus集成
+try:
+    from prometheus_client import generate_latest, Gauge, Info, CONTENT_TYPE_LATEST
+    PROMETHEUS_AVAILABLE = True
+except ImportError:
+    PROMETHEUS_AVAILABLE = False
+    print("警告: prometheus_client未安装，Prometheus功能不可用")
+    print("安装命令: pip install prometheus_client")
 
 app = Flask(__name__)
 CORS(app)
@@ -30,6 +39,79 @@ collector = CostCollectorV2()
 
 # 扫描状态
 scan_status = {'running': False, 'progress': 0, 'results': None, 'error': None}
+
+# Prometheus指标定义
+if PROMETHEUS_AVAILABLE:
+    aws_cost_daily_total = Gauge('aws_cost_daily_total_usd', 'AWS每日总成本(美元)')
+    aws_cost_hourly_total = Gauge('aws_cost_hourly_total_usd', 'AWS每小时总成本(美元)')
+    aws_cost_monthly_total = Gauge('aws_cost_monthly_total_usd', 'AWS当月总成本(美元)')
+    aws_cost_by_service = Gauge('aws_cost_daily_by_service_usd', 'AWS每日服务成本(美元)', ['service'])
+    aws_cost_by_resource = Gauge('aws_cost_daily_by_resource_usd', 'AWS每日资源成本(美元)', ['service', 'resource_id', 'region'])
+    aws_cost_info = Info('aws_cost_collection_info', 'AWS成本收集信息')
+
+def update_prometheus_metrics():
+    """更新Prometheus指标"""
+    if not PROMETHEUS_AVAILABLE:
+        return
+    
+    try:
+        summary = db_manager.get_latest_summary()
+        if not summary:
+            return
+        
+        # 更新基础指标
+        aws_cost_daily_total.set(summary['total_daily_cost'])
+        aws_cost_hourly_total.set(summary['total_hourly_cost'])
+        
+        # 更新服务分解
+        if summary.get('service_breakdown'):
+            try:
+                service_breakdown = json.loads(summary['service_breakdown'])
+                for service, cost in service_breakdown.items():
+                    aws_cost_by_service.labels(service=service).set(cost)
+            except:
+                pass
+        
+        # 获取月度成本
+        current_month_str = datetime.now().strftime('%Y-%m')
+        conn = db_manager.get_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT total_monthly_cost FROM monthly_summary WHERE year_month = ?', (current_month_str,))
+        monthly_result = cursor.fetchone()
+        if monthly_result:
+            aws_cost_monthly_total.set(monthly_result[0])
+        
+        # 获取资源详情
+        cursor.execute('''
+            SELECT service_type, resource_id, region, daily_cost 
+            FROM cost_records WHERE timestamp = ?
+        ''', (summary['timestamp'],))
+        resources = cursor.fetchall()
+        
+        for resource in resources:
+            service_type, resource_id, region, daily_cost = resource
+            aws_cost_by_resource.labels(
+                service=service_type,
+                resource_id=resource_id,
+                region=region
+            ).set(daily_cost)
+        
+        conn.close()
+        
+        # 更新信息指标
+        aws_cost_info.info({
+            'last_update': summary['timestamp'],
+            'total_resources': str(len(resources)),
+            'collection_status': 'success'
+        })
+        
+    except Exception as e:
+        logger.error(f"更新Prometheus指标失败: {e}")
+        if PROMETHEUS_AVAILABLE:
+            aws_cost_info.info({
+                'collection_status': 'error',
+                'error_message': str(e)
+            })
 
 @app.route('/')
 def dashboard():
@@ -162,6 +244,13 @@ def manual_collect():
     try:
         scan_status['progress'] = 50
         collector.collect_and_save()
+        
+        # 数据收集完成后更新Prometheus指标
+        try:
+            update_prometheus_metrics()
+        except Exception as e:
+            logger.warning(f"Prometheus指标更新失败: {e}")
+        
         scan_status = {
             'running': False,
             'progress': 100,
@@ -405,6 +494,27 @@ def traffic_summary():
     except Exception as e:
         logger.error(f"获取流量费用汇总失败: {e}")
         return jsonify({'traffic_cost': 0, 'traffic_percentage': 0, 'total_cost': 0}), 500
+
+@app.route('/metrics')
+def prometheus_metrics():
+    """暴露Prometheus指标"""
+    if not PROMETHEUS_AVAILABLE:
+        return "Prometheus client not available. Install with: pip install prometheus_client", 503
+    
+    # 更新指标
+    update_prometheus_metrics()
+    
+    # 返回Prometheus格式的指标
+    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
+
+@app.route('/api/prometheus_status')
+def prometheus_status():
+    """获取Prometheus集成状态"""
+    return jsonify({
+        'prometheus_available': PROMETHEUS_AVAILABLE,
+        'metrics_endpoint': '/metrics' if PROMETHEUS_AVAILABLE else None,
+        'install_command': 'pip install prometheus_client' if not PROMETHEUS_AVAILABLE else None
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=80)

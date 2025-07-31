@@ -1,0 +1,94 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "AWS成本监控",
+    "tags": ["aws", "cost", "monitoring"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "每日总成本",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "aws_cost_daily_total_usd",
+            "legendFormat": "每日成本"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD"
+          }
+        },
+        "gridPos": {"h": 8, "w": 6, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "月度总成本",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "aws_cost_monthly_total_usd",
+            "legendFormat": "月度成本"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD"
+          }
+        },
+        "gridPos": {"h": 8, "w": 6, "x": 6, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "服务成本分布",
+        "type": "piechart",
+        "targets": [
+          {
+            "expr": "aws_cost_daily_by_service_usd",
+            "legendFormat": "{{ service }}"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+      },
+      {
+        "id": 4,
+        "title": "成本趋势",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "aws_cost_daily_total_usd",
+            "legendFormat": "每日成本"
+          },
+          {
+            "expr": "aws_cost_hourly_total_usd * 24",
+            "legendFormat": "预估每日成本"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "currencyUSD"
+          }
+        },
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 8}
+      },
+      {
+        "id": 5,
+        "title": "资源成本排行",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "topk(10, aws_cost_daily_by_resource_usd)",
+            "format": "table"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 16}
+      }
+    ],
+    "time": {
+      "from": "now-24h",
+      "to": "now"
+    },
+    "refresh": "1m"
+  }
+}
